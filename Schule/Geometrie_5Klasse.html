@@ -375,9 +375,11 @@ h3.sub { color:var(--blue); font-size:0.98rem; margin:14px 0 4px; border-bottom:
   </table>
 
   <div class="warn">
-    <strong>Hierarchie:</strong> Quadrat ⊂ Rechteck ⊂ Parallelogramm ⊂ Trapez<br>
-    Quadrat ⊂ Raute ⊂ Parallelogramm<br>
-    (Jede spezielle Form ist auch ein allgemeines Viereck!)
+    <strong>Hierarchie</strong> (bei inklusiver Definition: Trapez = <em>mindestens</em> 1 Paar parallele Seiten):<br>
+    Quadrat ⊂ Rechteck ⊂ Parallelogramm ⊂ Trapez ⊂ Viereck<br>
+    Quadrat ⊂ Raute ⊂ Parallelogramm ⊂ Trapez ⊂ Viereck<br>
+    (Jede spezielle Form erfüllt alle Eigenschaften der allgemeineren Form.)<br>
+    <small style="color:var(--muted)">⚠ Manche Bücher definieren das Trapez mit <em>genau</em> einem Paar paralleler Seiten — dann gilt Parallelogramm ⊄ Trapez.</small>
   </div>
 </section>
 
@@ -994,7 +996,7 @@ function doConv() {
   const t=+document.getElementById('convTo').value;
   if (isNaN(v)) { document.getElementById('convResult').textContent='— Zahl eingeben —'; return; }
   const res = v * toM2[f] / toM2[t];
-  const s = res.toPrecision(6).replace(/\.?0+$/,'');
+  const s = parseFloat(res.toPrecision(6)).toLocaleString('de-DE');
   document.getElementById('convResult').textContent = `${v} ${unitNames[f]} = ${s} ${unitNames[t]}`;
 }
 
