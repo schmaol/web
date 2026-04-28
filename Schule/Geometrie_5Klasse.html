@@ -215,8 +215,8 @@ h3.sub { color:var(--blue); font-size:0.98rem; margin:14px 0 4px; border-bottom:
 
   <div class="ok">
     <strong>Beispiele:</strong><br>
-    A(1|3) und B(6|3): waagerecht → |AB| = |6−1| = <strong>5 Einheiten</strong><br>
-    C(4|1) und D(4|5): senkrecht → |CD| = |5−1| = <strong>4 Einheiten</strong>
+    A(1|3) und B(5|3): waagerecht → |AB| = |5−1| = <strong>4 Einheiten</strong><br>
+    C(3|0) und D(3|4): senkrecht → |CD| = |4−0| = <strong>4 Einheiten</strong>
   </div>
 </section>
 
@@ -367,7 +367,7 @@ h3.sub { color:var(--blue); font-size:0.98rem; margin:14px 0 4px; border-bottom:
   <h3>Vergleichstabelle</h3>
   <table>
     <tr><th>Viereck</th><th>Parallele Seiten</th><th>Seiten gleich lang</th><th>Winkel alle 90°</th><th>Diagonalen ⊥</th></tr>
-    <tr><td><strong>Trapez</strong></td>        <td>1 Paar</td><td>–</td><td>–</td><td>–</td></tr>
+    <tr><td><strong>Trapez</strong></td>        <td>mindestens 1 Paar</td><td>–</td><td>–</td><td>–</td></tr>
     <tr><td><strong>Parallelogramm</strong></td><td>2 Paare</td><td>je 2 gegenüber</td><td>–</td><td>–</td></tr>
     <tr><td><strong>Raute</strong></td>          <td>2 Paare</td><td>alle 4</td><td>–</td><td>✓</td></tr>
     <tr><td><strong>Rechteck</strong></td>       <td>2 Paare</td><td>je 2 gegenüber</td><td>✓</td><td>–</td></tr>
@@ -376,6 +376,7 @@ h3.sub { color:var(--blue); font-size:0.98rem; margin:14px 0 4px; border-bottom:
 
   <div class="warn">
     <strong>Hierarchie:</strong> Quadrat ⊂ Rechteck ⊂ Parallelogramm ⊂ Trapez<br>
+    Quadrat ⊂ Raute ⊂ Parallelogramm<br>
     (Jede spezielle Form ist auch ein allgemeines Viereck!)
   </div>
 </section>
@@ -400,7 +401,7 @@ h3.sub { color:var(--blue); font-size:0.98rem; margin:14px 0 4px; border-bottom:
   <div id="areaCount">Ausgefüllte Felder: 0 cm² (wenn 1 Feld = 1 cm²)</div>
   <button class="btn b-orange" onclick="clearGrid()" style="margin-top:7px;">Löschen ↺</button>
 
-  <div class="formula" style="margin-top:14px;">Flächeninhalt A = Anzahl der Einheitsquadrate × (Seitenlänge)²</div>
+  <div class="formula" style="margin-top:14px;">Flächeninhalt A = Anzahl der ausgefüllten Einheitsquadrate &nbsp;(1 Feld = 1 cm², wenn Seitenlänge = 1 cm)</div>
 </section>
 
 <!-- ═══════════════════════════════════════════════════
@@ -417,7 +418,7 @@ h3.sub { color:var(--blue); font-size:0.98rem; margin:14px 0 4px; border-bottom:
     <tr><td>Hektar</td><td>ha</td><td>= 100 a = 10 000 m²</td><td>Fußballfeld ≈ 1 ha</td></tr>
     <tr><td>Ar</td><td>a</td><td>= 100 m²</td><td>kleines Grundstück</td></tr>
     <tr><td>Quadratmeter</td><td>m²</td><td>= 100 dm²</td><td>Tischfläche</td></tr>
-    <tr><td>Quadratdezimeter</td><td>dm²</td><td>= 100 cm²</td><td>Heft-Seite ≈ 6 dm²</td></tr>
+    <tr><td>Quadratdezimeter</td><td>dm²</td><td>= 100 cm²</td><td>DIN-A4-Blatt ≈ 6 dm²</td></tr>
     <tr><td>Quadratzentimeter</td><td>cm²</td><td>= 100 mm²</td><td>Fingernagel ≈ 1 cm²</td></tr>
     <tr><td>Quadratmillimeter</td><td>mm²</td><td>kleinste hier</td><td>Stecknadelkopf</td></tr>
   </table>
@@ -628,7 +629,7 @@ h3.sub { color:var(--blue); font-size:0.98rem; margin:14px 0 4px; border-bottom:
     6: U = 24 cm &nbsp;|&nbsp; 7: Fünfeck 5, Siebeneck 14 &nbsp;|&nbsp; 9: A=84 cm², U=38 cm<br>
     10: a=9 cm, A=81 cm² &nbsp;|&nbsp; 11: A=17,1 m², U=16,6 m<br>
     12: 520 dm², 52 000 cm² &nbsp;|&nbsp; 13: 7,5 ha, 0,075 km² &nbsp;|&nbsp; 14: 34 500 m²<br>
-    15: 2,3 m²=230 dm² > 25 dm² &nbsp;|&nbsp; 17: 37,75 m² &nbsp;|&nbsp; 18: 58 m²
+    15: 2,3 m²=230 dm² > 25 dm² &nbsp;|&nbsp; 16: A = 60 cm² (10·8−4·5=80−20) &nbsp;|&nbsp; 17: 37,75 m² &nbsp;|&nbsp; 18: 58 m²
   </div>
   <button class="btn b-blue" onclick="toggleSol()" style="margin-top:10px;" id="solBtn">Lösungshinweise anzeigen</button>
 </section>
@@ -905,27 +906,27 @@ const shapes = {
   trapez: {
     pts:[[90,190],[280,190],[250,80],[130,80]],
     col:'#2563eb', title:'Trapez',
-    info:'<strong>Trapez</strong><br>• Genau <em>ein</em> Paar parallele Seiten (a ∥ c)<br>• Die anderen beiden Seiten (b, d) sind die Schenkel<br>• Umfang: U = a + b + c + d'
+    info:'<strong>Trapez</strong><br>• <em>Mindestens</em> ein Paar parallele Seiten — die <strong>Grundseiten</strong> (a ∥ c)<br>• Die anderen beiden Seiten (b, d) heißen <strong>Schenkel</strong><br>• Umfang: U = a + b + c + d'
   },
   pg: {
     pts:[[80,190],[270,190],[310,80],[120,80]],
     col:'#7c3aed', title:'Parallelogramm',
-    info:'<strong>Parallelogramm</strong><br>• Zwei Paare paralleler Seiten: a ∥ c und b ∥ d<br>• Gegenüber liegende Seiten gleich lang<br>• Gegenüber liegende Winkel gleich groß<br>• Umfang: U = 2·(a + b)'
+    info:'<strong>Parallelogramm</strong><br>• Zwei Paare paralleler Seiten: a ∥ c und b ∥ d<br>• Gegenüber liegende Seiten gleich lang<br>• Gegenüber liegende Winkel gleich groß<br>• Parallelogramme sind besondere des Trapeze!<br>• Umfang: U = 2·(a + b)'
   },
   raute: {
     pts:[[200,55],[305,155],[200,255],[95,155]],
     col:'#dc2626', title:'Raute (Rhombus)',
-    info:'<strong>Raute</strong><br>• Alle vier Seiten gleich lang (a = b = c = d)<br>• Ein Parallelogramm mit a = b<br>• Diagonalen stehen senkrecht aufeinander (⊥)<br>• Diagonalen halbieren sich gegenseitig<br>• Umfang: U = 4·a'
+    info:'<strong>Raute</strong><br>• Alle vier Seiten gleich lang (a = b = c = d)<br>• Ein Parallelogramm mit a = b<br>• Diagonalen stehen senkrecht aufeinander (⊥)<br>• Diagonalen halbieren sich gegenseitig<br>• Rauten sind besondere Parallelogramme!<br>• Umfang: U = 4·a'
   },
   rect: {
     pts:[[75,195],[320,195],[320,80],[75,80]],
     col:'#16a34a', title:'Rechteck',
-    info:'<strong>Rechteck</strong><br>• Alle vier Winkel = 90°<br>• Parallelogramm mit rechten Winkeln<br>• Gegenüber liegende Seiten gleich lang<br>• Diagonalen gleich lang<br>• A = a·b,   U = 2·(a + b)'
+    info:'<strong>Rechteck</strong><br>• Alle vier Winkel = 90°<br>• Parallelogramm mit rechten Winkeln<br>• Gegenüber liegende Seiten gleich lang<br>• Diagonalen gleich lang<br>• Rechtecke sind besondere Parallelogramme!<br>• A = a·b,   U = 2·(a + b)'
   },
   sq: {
     pts:[[115,200],[285,200],[285,30],[115,30]],
     col:'#d97706', title:'Quadrat',
-    info:'<strong>Quadrat</strong><br>• Alle vier Seiten gleich lang UND alle Winkel 90°<br>• Ist gleichzeitig Rechteck + Raute<br>• Diagonalen gleich lang <em>und</em> senkrecht aufeinander<br>• A = a²,   U = 4·a'
+    info:'<strong>Quadrat</strong><br>• Alle vier Seiten gleich lang UND alle Winkel 90°<br>• Ist gleichzeitig Rechteck + Raute<br>• Diagonalen gleich lang <em>und</em> senkrecht aufeinander<br>• Quadrate sind besondere Rechtecke oder Rauten!<br>• A = a²,   U = 4·a'
   }
 };
 function showShape(k) {
@@ -1137,7 +1138,7 @@ showComposite('add');
   ctx.fillStyle='#1e293b'; ctx.font='11px sans-serif';
   ctx.fillText('10 cm',ox+3*sc,oy-6);
   ctx.fillText('8 cm',ox-22,oy+4*sc);
-  ctx.fillText('4 cm',ox+8*sc,oy+2.5*sc);
+  ctx.fillText('4 cm',ox+7*sc,oy+5*sc-7);
   ctx.fillText('6 cm',ox+2*sc,oy+8*sc+13);
   ctx.fillText('5 cm',ox+10*sc+4,oy+2.5*sc);
   ctx.fillText('3 cm',ox+6*sc+4,oy+6.5*sc);
