@@ -566,11 +566,12 @@ h3.sub { color:var(--blue); font-size:0.98rem; margin:14px 0 4px; border-bottom:
 ════════════════════════════════════════════════════ -->
 <section class="section qz-section" id="quiz">
   <h2>🎯 Wissensquiz — 12 Fragen</h2>
-  <p>Beantworte alle Fragen, dann klicke auf <strong>"Auswerten"</strong>.</p>
+  <p>Jedes Mal werden <strong>12 Fragen zufällig</strong> aus einem Pool von 48 Fragen zusammengestellt — gleichmäßig über alle 12 Themengebiete verteilt.</p>
+  <div id="quizTopicInfo" style="font-size:0.8rem; color:var(--muted); margin-bottom:10px;"></div>
   <div id="quizBox"></div>
   <div class="btn-row" style="margin-top:16px;">
     <button class="btn b-green"  onclick="evalQuiz()" style="font-size:1rem; padding:10px 22px;">Quiz auswerten ✓</button>
-    <button class="btn b-orange" onclick="resetQuiz()" style="font-size:1rem; padding:10px 22px;">Zurücksetzen ↺</button>
+    <button class="btn b-orange" onclick="resetQuiz()" style="font-size:1rem; padding:10px 22px;">Neue Fragen ↺</button>
   </div>
   <div id="quizResult"></div>
 </section>
@@ -1157,89 +1158,251 @@ function toggleSol() {
 }
 
 // ─── QUIZ ────────────────────────────────────────────────────
-const qdata = [
-  { q:'Welche Koordinaten hat ein Punkt, der 4 Einheiten nach links und 3 Einheiten nach oben liegt?',
-    opts:['(4|3)','(−4|3)','(4|−3)','(−4|−3)'], ok:1,
-    ex:'Links = negative x-Koordinate → −4; oben = positive y-Koordinate → +3. Also P(−4|3).' },
-  { q:'Wie viele Diagonalen hat ein Sechseck?',
-    opts:['6','8','9','12'], ok:2,
-    ex:'Formel: n·(n−3)/2 = 6·3/2 = 9. Die roten Striche im Sechseck-Bild bestätigen das.' },
-  { q:'Rechteck a = 12 cm, b = 5 cm. Wie groß ist der Umfang U?',
-    opts:['60 cm','34 cm','17 cm','24 cm'], ok:1,
-    ex:'U = 2·(a+b) = 2·(12+5) = 2·17 = 34 cm.' },
-  { q:'Welche Aussage über parallele Geraden ist FALSCH?',
-    opts:['Sie haben überall den gleichen Abstand.','Sie schneiden sich nie.','Sie stehen senkrecht aufeinander.','Sie verlaufen in dieselbe Richtung.'], ok:2,
-    ex:'Senkrecht aufeinander = orthogonal (⊥), nicht parallel (∥). Das ist der klassische Verwechslungs-Fehler!' },
-  { q:'Wie viele cm² sind 2,5 m²?',
-    opts:['250 cm²','2 500 cm²','25 000 cm²','250 000 cm²'], ok:2,
-    ex:'2,5 m² ×100 = 250 dm² ×100 = 25 000 cm²  (zwei Stufen, also ×10 000 insgesamt).' },
-  { q:'Welches Viereck hat alle Seiten gleich lang UND alle Winkel 90°?',
-    opts:['Raute','Rechteck','Parallelogramm','Quadrat'], ok:3,
-    ex:'Das Quadrat ist gleichzeitig Raute (alle Seiten gleich) und Rechteck (alle Winkel 90°).' },
-  { q:'Von einem 6×8 cm Rechteck wird eine 2×3 cm Ecke abgezogen. Wie groß ist die Restfläche?',
-    opts:['48 cm²','42 cm²','44 cm²','46 cm²'], ok:1,
-    ex:'A = 6·8 − 2·3 = 48 − 6 = 42 cm² (Subtraktionsmethode).' },
-  { q:'1 ha entspricht wie vielen Quadratmetern?',
-    opts:['100 m²','1 000 m²','10 000 m²','100 000 m²'], ok:2,
-    ex:'1 ha = 100 a, 1 a = 100 m² → 1 ha = 10 000 m². (Fußballfeld ≈ 1 ha!)' },
-  { q:'Welche Figur hat Diagonalen, die gleich lang UND senkrecht aufeinander stehen?',
-    opts:['Parallelogramm','Trapez','Quadrat','Raute'], ok:2,
-    ex:'Beim Quadrat sind die Diagonalen gleich lang (wie Rechteck) und stehen ⊥ aufeinander (wie Raute).' },
-  { q:'Ein Quadrat hat Flächeninhalt 64 cm². Wie lang ist eine Seite?',
-    opts:['6 cm','8 cm','16 cm','32 cm'], ok:1,
-    ex:'A = a² → a = √64 = 8 cm. Probe: 8·8 = 64 ✓' },
-  { q:'Der Abstand eines Punktes P von einer Geraden g ist …',
-    opts:['… die längste Verbindungsstrecke von P zu g.','… die Länge des Lots von P auf g (kürzeste Strecke).','… der Mittelwert aller Abstände.','… immer 0.'], ok:1,
-    ex:'Der Abstand ist stets die KÜRZESTE Verbindung — das Lot (senkrechte Strecke) von P auf g.' },
-  { q:'Wie rechnet man 3,7 dm² in cm² um?',
-    opts:['×10 = 37 cm²','×100 = 370 cm²','÷100 = 0,037 cm²','×1 000 = 3 700 cm²'], ok:1,
-    ex:'1 dm² = 100 cm² → 3,7 · 100 = 370 cm². (Eine Stufe kleiner = mal 100!)' }
+// Fragenpool: 4 Fragen je Thema (topic 0–11) = 48 Fragen gesamt.
+// Pro Quiz wird zufällig 1 Frage je Thema gezogen → immer 12 Fragen, gleichmäßig verteilt.
+const topicLabels = [
+  'Koordinatensystem','Strecken','Geraden & Orthogonalität','Abstand Punkt–Gerade',
+  'Parallelität','Vielecke','Besondere Vierecke','Flächenvergleich',
+  'Flächeneinheiten','Rechteck','Rechnen mit Einheiten','Zusammengesetzte Flächen'
 ];
 
+const qpool = [
+  // ── T0: Koordinatensystem ─────────────────────────────────
+  { t:0, q:'Welche Koordinaten hat ein Punkt, der 4 Einheiten nach links und 3 Einheiten nach oben liegt?',
+    opts:['(4|3)','(−4|3)','(4|−3)','(−4|−3)'], ok:1,
+    ex:'Links = negative x-Koordinate → −4; oben = positive y-Koordinate → +3. Also P(−4|3).' },
+  { t:0, q:'In welchem Quadranten liegt der Punkt Q(−3|−5)?',
+    opts:['1. Quadrant (x>0, y>0)','2. Quadrant (x<0, y>0)','3. Quadrant (x<0, y<0)','4. Quadrant (x>0, y<0)'], ok:2,
+    ex:'Beide Koordinaten negativ → 3. Quadrant (links unten).' },
+  { t:0, q:'Welcher Punkt liegt auf der y-Achse?',
+    opts:['A(3|0)','B(0|−4)','C(2|2)','D(−1|0)'], ok:1,
+    ex:'Auf der y-Achse gilt immer x = 0. Nur B(0|−4) hat x = 0.' },
+  { t:0, q:'Punkt P(−5|3): Wie weit ist P vom Ursprung O, wenn man nur achsenparallel geht?',
+    opts:['3 Einheiten','5 Einheiten','8 Einheiten','√34 Einheiten'], ok:2,
+    ex:'5 Einheiten nach links + 3 Einheiten nach oben = 8 Einheiten entlang der Achsen.' },
+
+  // ── T1: Strecken ─────────────────────────────────────────
+  { t:1, q:'A(1|3) und B(5|3): Wie lang ist die Strecke AB?',
+    opts:['3 Einheiten','4 Einheiten','5 Einheiten','8 Einheiten'], ok:1,
+    ex:'|AB| = |x₂ − x₁| = |5 − 1| = 4 Einheiten (waagerechte Strecke).' },
+  { t:1, q:'C(2|1) und D(2|7): Wie lang ist die Strecke CD?',
+    opts:['2 Einheiten','5 Einheiten','6 Einheiten','9 Einheiten'], ok:2,
+    ex:'|CD| = |y₂ − y₁| = |7 − 1| = 6 Einheiten (senkrechte Strecke, gleiche x-Koordinate).' },
+  { t:1, q:'Was unterscheidet eine Strecke von einem Strahl?',
+    opts:['Eine Strecke ist länger.','Eine Strecke hat zwei Endpunkte, ein Strahl nur einen.','Ein Strahl hat zwei Endpunkte.','Es gibt keinen Unterschied.'], ok:1,
+    ex:'Strecke [AB]: Anfangs- und Endpunkt. Strahl AB: nur Anfangspunkt, dann einseitig unendlich.' },
+  { t:1, q:'Welche Aussage über eine Gerade trifft zu?',
+    opts:['Sie hat genau einen Endpunkt.','Sie hat zwei Endpunkte.','Sie ist in beide Richtungen unendlich.','Sie kann gebogen sein.'], ok:2,
+    ex:'Eine Gerade hat keinen Anfang und kein Ende — sie ist beidseitig unendlich.' },
+
+  // ── T2: Geraden / Orthogonalität ─────────────────────────
+  { t:2, q:'Was bedeutet g ⊥ h?',
+    opts:['g und h sind parallel.','g und h schneiden sich unter 45°.','g und h stehen senkrecht aufeinander (90°).','g und h sind gleich lang.'], ok:2,
+    ex:'⊥ steht für orthogonal = senkrecht = 90°-Winkel am Schnittpunkt.' },
+  { t:2, q:'Woran erkennst du am Schnittpunkt, dass zwei Geraden orthogonal sind?',
+    opts:['An einem kleinen Kreis.','An einem kleinen Quadrat □.','An einem Kreuz ×.','An einem Pfeil.'], ok:1,
+    ex:'Das kleine Quadrat □ am Schnittpunkt ist das internationale Symbol für 90°.' },
+  { t:2, q:'Zwei Geraden schneiden sich unter 90°. Wie nennt man dieses Verhältnis?',
+    opts:['Parallel','Kongruent','Orthogonal','Symmetrisch'], ok:2,
+    ex:'Orthogonal (senkrecht zueinander): Schnittwinkel genau 90°.' },
+  { t:2, q:'Gerade g verläuft waagerecht. Gerade h steht orthogonal auf g. Wie verläuft h?',
+    opts:['Ebenfalls waagerecht.','Schräg unter 45°.','Senkrecht (lotrecht).','Parallel zu g.'], ok:2,
+    ex:'Orthogonal auf eine waagerechte Gerade = senkrecht, also von oben nach unten.' },
+
+  // ── T3: Abstand Punkt–Gerade ─────────────────────────────
+  { t:3, q:'Was ist der Abstand d(P, g)?',
+    opts:['Die längste Strecke von P zu g.','Die Länge des Lots von P auf g (kürzeste Strecke).','Die halbe Länge von g.','Der Mittelpunkt von g.'], ok:1,
+    ex:'Der Abstand ist die KÜRZESTE Verbindung — das Lot (senkrechte Strecke) von P auf g.' },
+  { t:3, q:'Wie heißt der Schnittpunkt des Lots mit der Geraden g?',
+    opts:['Mittelpunkt','Scheitelpunkt','Lotfußpunkt','Ursprung'], ok:2,
+    ex:'Der Punkt P\' auf g, auf den das Lot trifft, heißt Lotfußpunkt.' },
+  { t:3, q:'Punkt P liegt 5 cm senkrecht über der waagerechten Geraden g. Wie groß ist d(P, g)?',
+    opts:['2,5 cm','5 cm','10 cm','Kann nicht bestimmt werden.'], ok:1,
+    ex:'Das Lot ist die senkrechte Strecke von P zu g — genau 5 cm.' },
+  { t:3, q:'Unter welchem Winkel steht das Lot auf der Geraden g?',
+    opts:['45°','60°','90°','Es kommt auf die Lage an.'], ok:2,
+    ex:'Ein Lot steht per Definition immer im rechten Winkel (90°) auf der Geraden.' },
+
+  // ── T4: Parallelität ─────────────────────────────────────
+  { t:4, q:'Welche Aussage über parallele Geraden ist FALSCH?',
+    opts:['Sie haben überall den gleichen Abstand.','Sie schneiden sich nie.','Sie stehen senkrecht aufeinander.','Sie verlaufen in dieselbe Richtung.'], ok:2,
+    ex:'Senkrecht = orthogonal (⊥), nicht parallel (∥). Klassischer Verwechslungs-Fehler!' },
+  { t:4, q:'g ∥ h bedeutet …',
+    opts:['g steht senkrecht auf h.','g und h sind gleich lang.','g und h schneiden sich nie.','g ist kürzer als h.'], ok:2,
+    ex:'∥ steht für parallel: g und h laufen nebeneinander und schneiden sich nie.' },
+  { t:4, q:'Welche Eigenschaft haben parallele Geraden NICHT?',
+    opts:['Gleicher Abstand überall.','Gleiche Richtung.','Sie schneiden sich irgendwann.','Können durch Verschiebung ineinander überführt werden.'], ok:2,
+    ex:'Parallele Geraden schneiden sich NIEMALS, egal wie weit man sie verlängert.' },
+  { t:4, q:'An welchem Alltagsbeispiel sieht man parallele Linien besonders gut?',
+    opts:['Den Seiten eines Dreiecks.','Einem Kreis.','Bahnschienen.','Den Zeigern einer Uhr.'], ok:2,
+    ex:'Bahnschienen verlaufen parallel: überall gleicher Abstand, schneiden sich nie.' },
+
+  // ── T5: Vielecke ─────────────────────────────────────────
+  { t:5, q:'Wie viele Diagonalen hat ein Sechseck?',
+    opts:['6','8','9','12'], ok:2,
+    ex:'Formel: n·(n−3)/2 = 6·3/2 = 9.' },
+  { t:5, q:'Ein regelmäßiges Fünfeck hat Seitenlänge 6 cm. Wie groß ist der Umfang?',
+    opts:['24 cm','30 cm','36 cm','60 cm'], ok:1,
+    ex:'U = 5 × 6 cm = 30 cm (alle Seiten gleich lang).' },
+  { t:5, q:'Wie viele Diagonalen hat ein Fünfeck?',
+    opts:['3','4','5','6'], ok:2,
+    ex:'Formel: n·(n−3)/2 = 5·2/2 = 5 Diagonalen.' },
+  { t:5, q:'Was ist eine Diagonale?',
+    opts:['Eine Seite des Vielecks.','Die Verbindung zweier benachbarter Ecken.','Die Verbindung zweier nicht benachbarter Ecken.','Die Mittellinie des Vielecks.'], ok:2,
+    ex:'Diagonalen verbinden Ecken, die NICHT durch eine Seite verbunden sind.' },
+
+  // ── T6: Besondere Vierecke ───────────────────────────────
+  { t:6, q:'Welches Viereck hat alle Seiten gleich lang UND alle Winkel 90°?',
+    opts:['Raute','Rechteck','Parallelogramm','Quadrat'], ok:3,
+    ex:'Das Quadrat ist gleichzeitig Raute (alle Seiten gleich) und Rechteck (alle Winkel 90°).' },
+  { t:6, q:'Was unterscheidet eine Raute vom allgemeinen Parallelogramm?',
+    opts:['Die Raute hat keine parallelen Seiten.','Bei der Raute sind alle vier Seiten gleich lang.','Die Raute hat rechte Winkel.','Die Raute hat mehr als 4 Ecken.'], ok:1,
+    ex:'Raute = Parallelogramm mit vier gleich langen Seiten.' },
+  { t:6, q:'Welche Aussage über ein Rechteck ist korrekt?',
+    opts:['Alle vier Seiten sind gleich lang.','Es hat keine rechten Winkel.','Gegenüberliegende Seiten gleich lang, alle Winkel 90°.','Es ist ein Sonderfall der Raute.'], ok:2,
+    ex:'Rechteck: je 2 gegenüberliegende Seiten gleich lang, alle 4 Winkel = 90°.' },
+  { t:6, q:'Bei welchem Viereck stehen die Diagonalen senkrecht aufeinander, sind aber NICHT gleich lang?',
+    opts:['Rechteck','Quadrat','Raute','Trapez'], ok:2,
+    ex:'Bei der Raute: Diagonalen ⊥ aber unterschiedlich lang. Beim Quadrat: ⊥ UND gleich lang.' },
+
+  // ── T7: Flächenvergleich ─────────────────────────────────
+  { t:7, q:'Welche Methode eignet sich am besten, um die Fläche einer unregelmäßigen Form zu schätzen?',
+    opts:['Umfang messen.','Einheitsquadrate auszählen.','Diagonalen messen.','Winkel messen.'], ok:1,
+    ex:'Einheitsquadrate auszählen ist die direkteste Methode zur Flächenbestimmung.' },
+  { t:7, q:'Figur A hat 24 cm² (Einheitsquadrate), Figur B hat 3 dm². Welche ist größer?',
+    opts:['Figur A (24 cm²)','Figur B (300 cm²)','Beide gleich groß.','Kann nicht verglichen werden.'], ok:1,
+    ex:'3 dm² = 300 cm² > 24 cm². Figur B ist also deutlich größer.' },
+  { t:7, q:'Man verschiebt Teile einer Fläche ohne Überlappung. Was passiert mit dem Flächeninhalt?',
+    opts:['Er wird größer.','Er wird kleiner.','Er bleibt gleich.','Er halbiert sich.'], ok:2,
+    ex:'Umordnen/Verschieben von Teilen ändert den Flächeninhalt nicht.' },
+  { t:7, q:'In welcher Einheit wird Flächeninhalt angegeben?',
+    opts:['cm (Zentimeter)','cm² (Quadratzentimeter)','cm³ (Kubikzentimeter)','g (Gramm)'], ok:1,
+    ex:'Flächen werden in Quadrateinheiten (cm², m², …) gemessen.' },
+
+  // ── T8: Flächeneinheiten ─────────────────────────────────
+  { t:8, q:'Wie viele cm² sind 2,5 m²?',
+    opts:['250 cm²','2 500 cm²','25 000 cm²','250 000 cm²'], ok:2,
+    ex:'2,5 m² × 100 = 250 dm²; × 100 = 25 000 cm² (zwei Stufen = × 10 000).' },
+  { t:8, q:'1 ha entspricht wie vielen Quadratmetern?',
+    opts:['100 m²','1 000 m²','10 000 m²','100 000 m²'], ok:2,
+    ex:'1 ha = 100 a; 1 a = 100 m² → 1 ha = 10 000 m².' },
+  { t:8, q:'Warum gilt 1 m² = 100 dm² (und nicht 10 dm²)?',
+    opts:['Weil Meter größer sind als Dezimeter.','Weil 1 m = 10 dm → 1 m² = 10×10 dm² = 100 dm².','Das ist eine Konvention ohne Begründung.','Weil dm² kleiner als m² ist.'], ok:1,
+    ex:'Bei Flächen geht die Seitenlänge im Quadrat ein: 1 m = 10 dm → 1 m² = 100 dm².' },
+  { t:8, q:'Welche Einheit ist größer als ein Ar (a)?',
+    opts:['dm²','cm²','mm²','ha (Hektar)'], ok:3,
+    ex:'1 ha = 100 a — das Hektar ist 100-mal größer als das Ar.' },
+
+  // ── T9: Rechteck ─────────────────────────────────────────
+  { t:9, q:'Rechteck a = 12 cm, b = 5 cm. Wie groß ist der Umfang U?',
+    opts:['60 cm','34 cm','17 cm','24 cm'], ok:1,
+    ex:'U = 2·(a+b) = 2·17 = 34 cm.' },
+  { t:9, q:'Ein Quadrat hat Flächeninhalt 64 cm². Wie lang ist eine Seite?',
+    opts:['6 cm','8 cm','16 cm','32 cm'], ok:1,
+    ex:'A = a² → a = √64 = 8 cm. Probe: 8·8 = 64 ✓' },
+  { t:9, q:'Rechteck a = 9 cm, b = 4 cm. Wie groß ist der Flächeninhalt A?',
+    opts:['26 cm²','36 cm²','40 cm²','72 cm²'], ok:1,
+    ex:'A = a · b = 9 · 4 = 36 cm².' },
+  { t:9, q:'Ein Quadrat hat Umfang U = 36 cm. Wie groß ist seine Fläche?',
+    opts:['9 cm²','36 cm²','81 cm²','144 cm²'], ok:2,
+    ex:'U = 4·a → a = 9 cm; A = 9² = 81 cm².' },
+
+  // ── T10: Rechnen mit Einheiten ───────────────────────────
+  { t:10, q:'Wie rechnet man 3,7 dm² in cm² um?',
+    opts:['×10 → 37 cm²','×100 → 370 cm²','÷100 → 0,037 cm²','×1 000 → 3 700 cm²'], ok:1,
+    ex:'1 dm² = 100 cm² → 3,7 · 100 = 370 cm².' },
+  { t:10, q:'A₁ = 2,5 m² und A₂ = 300 dm². Welche Fläche ist größer?',
+    opts:['A₁ (2,5 m² = 250 dm²)','A₂ (300 dm²)','Beide gleich groß.','Kann nicht verglichen werden.'], ok:1,
+    ex:'2,5 m² = 250 dm² < 300 dm². Also ist A₂ größer.' },
+  { t:10, q:'Was ist 3 m² in cm²?',
+    opts:['300 cm²','3 000 cm²','30 000 cm²','300 000 cm²'], ok:2,
+    ex:'3 m² → ×100 → 300 dm² → ×100 → 30 000 cm². Zwei Stufen = ×10 000.' },
+  { t:10, q:'Ein Feld hat 3 ha und 25 a. Wie viel m² sind das insgesamt?',
+    opts:['325 m²','3 250 m²','32 500 m²','325 000 m²'], ok:2,
+    ex:'3 ha = 300 a; 300 + 25 = 325 a; 325 × 100 = 32 500 m².' },
+
+  // ── T11: Zusammengesetzte Flächen ────────────────────────
+  { t:11, q:'Von einem 6×8 cm Rechteck wird eine 2×3 cm Ecke abgezogen. Wie groß ist die Restfläche?',
+    opts:['48 cm²','42 cm²','44 cm²','46 cm²'], ok:1,
+    ex:'A = 6·8 − 2·3 = 48 − 6 = 42 cm² (Subtraktionsmethode).' },
+  { t:11, q:'Eine L-Form wird in zwei Rechtecke zerlegt: A₁ = 18 cm², A₂ = 12 cm². Gesamtfläche?',
+    opts:['6 cm²','18 cm²','30 cm²','216 cm²'], ok:2,
+    ex:'Additionsmethode: A = A₁ + A₂ = 18 + 12 = 30 cm².' },
+  { t:11, q:'Terrasse: Außenmaße 10 m × 7 m, ausgeschnittene Ecke 4 m × 3 m. Terrassenfläche?',
+    opts:['70 m²','58 m²','54 m²','82 m²'], ok:1,
+    ex:'A = 10·7 − 4·3 = 70 − 12 = 58 m².' },
+  { t:11, q:'Welche Strategie ist bei einer L-Form meist am schnellsten?',
+    opts:['Alle Seiten addieren.','Großes Rechteck ergänzen und fehlende Ecke subtrahieren.','Den Umfang berechnen.','In Dreiecke zerlegen.'], ok:1,
+    ex:'Ergänzungsmethode: Großes Rechteck − fehlende Ecke. Schnell und übersichtlich bei L-Formen.' }
+];
+
+// Aktuell ausgewählte 12 Fragen (1 je Thema, zufällig aus je 4 gewählt)
+let qdata = [];
+
+function pickQuestions() {
+  qdata = [];
+  for (let t = 0; t < 12; t++) {
+    const pool = qpool.filter(q => q.t === t);
+    qdata.push(pool[Math.floor(Math.random() * pool.length)]);
+  }
+}
+
 function buildQuiz() {
-  const box=document.getElementById('quizBox'); box.innerHTML='';
-  qdata.forEach((item,qi) => {
-    const div=document.createElement('div'); div.className='qz-q';
-    div.innerHTML=`<div class="qt">${qi+1}. ${item.q}</div>` +
-      item.opts.map((o,oi)=>
+  pickQuestions();
+  document.getElementById('quizResult').innerHTML = '';
+  const box = document.getElementById('quizBox');
+  box.innerHTML = '';
+  document.getElementById('quizTopicInfo').innerHTML =
+    'Themen dieser Runde: ' + topicLabels.map((l, i) =>
+      `<span style="display:inline-block;background:#e0e7ff;border-radius:4px;padding:1px 7px;margin:2px;font-size:0.73rem;">${i+1}. ${l}</span>`
+    ).join('');
+  qdata.forEach((item, qi) => {
+    const div = document.createElement('div');
+    div.className = 'qz-q';
+    div.innerHTML =
+      `<div style="font-size:0.72rem;color:var(--muted);margin-bottom:4px;">Thema: ${topicLabels[item.t]}</div>` +
+      `<div class="qt">${qi+1}. ${item.q}</div>` +
+      item.opts.map((o, oi) =>
         `<label class="qz-opt" id="o_${qi}_${oi}"><input type="radio" name="q${qi}" value="${oi}"> ${o}</label>`
       ).join('') +
       `<div class="qz-fb" id="fb_${qi}"></div>`;
     box.appendChild(div);
   });
 }
+
 function evalQuiz() {
-  let score=0;
-  qdata.forEach((item,qi) => {
-    const sel=document.querySelector(`input[name="q${qi}"]:checked`);
-    const fb=document.getElementById(`fb_${qi}`);
-    item.opts.forEach((_,oi)=>{
-      document.getElementById(`o_${qi}_${oi}`).classList.remove('correct','wrong');
+  let score = 0;
+  qdata.forEach((item, qi) => {
+    const sel = document.querySelector(`input[name="q${qi}"]:checked`);
+    const fb = document.getElementById(`fb_${qi}`);
+    item.opts.forEach((_, oi) => {
+      document.getElementById(`o_${qi}_${oi}`).classList.remove('correct', 'wrong');
     });
     document.getElementById(`o_${qi}_${item.ok}`).classList.add('correct');
     if (sel) {
-      const v=+sel.value;
-      if (v===item.ok) { score++; fb.style.color='#16a34a'; fb.textContent='✓ Richtig! '+item.ex; }
-      else { document.getElementById(`o_${qi}_${v}`).classList.add('wrong'); fb.style.color='#dc2626'; fb.textContent='✗ Leider falsch. '+item.ex; }
-    } else { fb.style.color='#d97706'; fb.textContent='⚠ Nicht beantwortet. '+item.ex; }
-    fb.style.display='block';
+      const v = +sel.value;
+      if (v === item.ok) { score++; fb.style.color = '#16a34a'; fb.textContent = '✓ Richtig! ' + item.ex; }
+      else { document.getElementById(`o_${qi}_${v}`).classList.add('wrong'); fb.style.color = '#dc2626'; fb.textContent = '✗ Leider falsch. ' + item.ex; }
+    } else { fb.style.color = '#d97706'; fb.textContent = '⚠ Nicht beantwortet. ' + item.ex; }
+    fb.style.display = 'block';
   });
-  const pct=Math.round(score/qdata.length*100);
-  let g,c,m;
-  if(pct>=92){g='1 – Sehr gut';  c='#16a34a'; m='Hervorragend! Du bist bestens vorbereitet.';}
-  else if(pct>=75){g='2 – Gut';   c='#2563eb'; m='Sehr gut! Kleine Details noch wiederholen.';}
-  else if(pct>=58){g='3 – Befriedigend'; c='#7c3aed'; m='Gut! Schau die rot markierten Themen nochmal an.';}
-  else if(pct>=42){g='4 – Ausreichend'; c='#d97706'; m='Übe mehr — besonders die Einheiten und Formeln.';}
-  else {g='5 – Nicht bestanden'; c='#dc2626'; m='Lies die Zusammenfassung nochmal durch und übe täglich!';}
+  const pct = Math.round(score / qdata.length * 100);
+  let g, c, m;
+  if (pct >= 92)      { g = '1 – Sehr gut';       c = '#16a34a'; m = 'Hervorragend! Du bist bestens vorbereitet.'; }
+  else if (pct >= 75) { g = '2 – Gut';             c = '#2563eb'; m = 'Sehr gut! Kleine Details noch wiederholen.'; }
+  else if (pct >= 58) { g = '3 – Befriedigend';    c = '#7c3aed'; m = 'Gut! Schau die rot markierten Themen nochmal an.'; }
+  else if (pct >= 42) { g = '4 – Ausreichend';     c = '#d97706'; m = 'Übe mehr — besonders die Einheiten und Formeln.'; }
+  else                { g = '5 – Nicht bestanden'; c = '#dc2626'; m = 'Lies die Zusammenfassung nochmal durch und übe täglich!'; }
   document.getElementById('quizResult').innerHTML =
     `<div class="qz-result" style="border:3px solid ${c}">
        <h3 style="color:${c}">${score} / ${qdata.length} Punkte</h3>
        <p style="font-size:1.2rem;">Ergebnis: ${pct}% → Note: <strong>${g}</strong></p>
        <p style="margin-top:8px; opacity:0.9">${m}</p>
      </div>`;
-  document.getElementById('quizResult').scrollIntoView({behavior:'smooth',block:'center'});
+  document.getElementById('quizResult').scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
-function resetQuiz() { buildQuiz(); document.getElementById('quizResult').innerHTML=''; }
+
+function resetQuiz() { buildQuiz(); }
 buildQuiz();
 </script>
 </body>
