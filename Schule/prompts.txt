@@ -1,0 +1,25 @@
+ich bin Schüler 5. Klasse Gymnasium und bereite mich auf eine Klassenarbeit in Mathematik vor.
+Thema: Geometrie.
+Im Anhang einige Schulbuchseiten zu den Themen: 
+
+- Punkte im Koordinatensystem
+- Strecken und Ihre Längen
+- Geraden, zueinander orthogonale Geraden
+- Abstand eines Punktes von einer Geraden
+- Parallelität von Geraden
+- Vielecke - Umfang und Diagonalen
+- Besondere Vierecke (Trapez, Parallelogramm, Raute, Rechteck, Quadrat)
+- Größenvergleich von Flächen, Flächeninhalt und Umfang
+- Flächeninhaltseinheiten und Umrechnen von Flächeneinheiten (Quadratkilometer, Hektar, Ar, Quadratmeter, Quadratdezimeter, Quadratzentimeter, Quadratmillimeter) 
+- Flächeninhalt und Umfang eines Rechtecks
+- Rechnen mit Flächeneinheiten
+- Strategien zum Berechnen zusammengesetzter Flächen
+
+Bitte erstelle mit Hilfe der Buchseiten eine anschauliche und verständliche Zusammenfassung und Erklärung aller Themen.
+Verwende Skizzen und Beispiele zur Unterstützung.
+Wenn möglich integriere auch interaktive Inhalte zum ausprobieren und zur Veranschaulichung. 
+
+Erstelle am Ende noch ein interaktives Wissensquiz (10 bis 12 multiple choice Fragen. Mittel bis schwierig) 
+und suche einige passende Übungsaufgaben aus den Buchseiten zusammen.
+
+Fasse am Ende alles in eine interaktive klickbare html Datei zusammen.
