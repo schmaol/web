@@ -22,4 +22,4 @@ Wenn möglich integriere auch interaktive Inhalte zum ausprobieren und zur Veran
 Erstelle am Ende noch ein interaktives Wissensquiz (10 bis 12 multiple choice Fragen. Mittel bis schwierig) 
 und suche einige passende Übungsaufgaben aus den Buchseiten zusammen.
 
-Fasse am Ende alles in eine interaktive klickbare html Datei zusammen.
+Fasse am Ende alles in eine interaktive klickbare html Datei zusammen!
