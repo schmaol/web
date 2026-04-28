@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Geometrie – 5. Klasse Gymnasium</title>
+<style>
+:root {
+  --blue: #2563eb; --purple: #7c3aed; --green: #16a34a;
+  --orange: #d97706; --red: #dc2626; --cyan: #0891b2;
+  --bg: #f1f5f9; --card: #ffffff; --text: #1e293b;
+  --muted: #64748b; --border: #e2e8f0;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; }
+
+/* NAV */
+nav {
+  background: linear-gradient(135deg, #1e3a8a 0%, #6d28d9 100%);
+  color: #fff; padding: 14px 20px; position: sticky; top: 0; z-index: 200;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.25);
+}
+nav h1 { font-size: 1.15rem; margin-bottom: 8px; letter-spacing: 0.3px; }
+.nav-links { display: flex; flex-wrap: wrap; gap: 5px; }
+.nav-links a {
+  color: rgba(255,255,255,0.82); text-decoration: none; font-size: 0.72rem;
+  padding: 3px 9px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.28);
+  transition: background 0.18s, color 0.18s;
+}
+.nav-links a:hover { background: rgba(255,255,255,0.22); color: #fff; }
+
+/* MAIN */
+main { max-width: 880px; margin: 0 auto; padding: 24px 14px 40px; }
+
+/* SECTIONS */
+.section {
+  background: var(--card); border-radius: 14px; padding: 22px 24px;
+  margin-bottom: 22px; box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  border-left: 5px solid var(--blue);
+}
+.section:nth-child(2n)   { border-left-color: var(--purple); }
+.section:nth-child(3n)   { border-left-color: var(--green);  }
+.section:nth-child(4n)   { border-left-color: var(--orange); }
+.section:nth-child(5n)   { border-left-color: var(--red);    }
+.section:nth-child(6n)   { border-left-color: var(--cyan);   }
+.section h2 { font-size: 1.3rem; color: var(--blue); margin-bottom: 14px; }
+.section:nth-child(2n) h2 { color: var(--purple); }
+.section:nth-child(3n) h2 { color: var(--green);  }
+.section:nth-child(4n) h2 { color: var(--orange); }
+.section:nth-child(5n) h2 { color: var(--red);    }
+.section h3 { font-size: 1.05rem; margin: 14px 0 6px; color: var(--text); }
+p { margin-bottom: 9px; }
+
+/* BOXES */
+.info  { background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; padding:11px 15px; margin:10px 0; }
+.warn  { background:#fffbeb; border:1px solid #fcd34d; border-radius:8px; padding:11px 15px; margin:10px 0; }
+.ok    { background:#f0fdf4; border:1px solid #86efac; border-radius:8px; padding:11px 15px; margin:10px 0; }
+.formula {
+  background:#fefce8; border:2px solid #fbbf24; border-radius:8px;
+  padding:12px 16px; margin:12px 0; font-weight:700; text-align:center; font-size:1.05rem;
+}
+
+/* CANVAS */
+.cv-wrap {
+  background:#fff; border:1px solid var(--border); border-radius:8px;
+  padding:6px; margin:10px 0; overflow:hidden; text-align:center;
+}
+canvas { display:inline-block; max-width:100%; }
+.hint  { font-size:0.8rem; color:var(--muted); margin-top:2px; }
+
+/* TABLES */
+table { width:100%; border-collapse:collapse; margin:10px 0; font-size:0.9rem; }
+th { background:var(--blue); color:#fff; padding:7px 10px; text-align:left; }
+td { padding:7px 10px; border-bottom:1px solid var(--border); }
+tr:nth-child(even) td { background:#f8fafc; }
+
+/* BUTTONS */
+.btn { padding:7px 14px; border:none; border-radius:6px; cursor:pointer; font-size:0.88rem; font-weight:600; transition:filter 0.15s; }
+.btn:hover { filter:brightness(0.9); }
+.b-blue   { background:var(--blue);   color:#fff; }
+.b-green  { background:var(--green);  color:#fff; }
+.b-orange { background:var(--orange); color:#fff; }
+.b-red    { background:var(--red);    color:#fff; }
+.btn-row  { display:flex; flex-wrap:wrap; gap:7px; margin:8px 0; }
+
+/* INTERACTIVE */
+.slider-row { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:6px 0; font-size:0.9rem; }
+input[type=range] { width:180px; cursor:pointer; }
+.conv-box { background:#f0f9ff; border:1px solid #bae6fd; border-radius:8px; padding:14px; margin:10px 0; }
+.conv-row { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin:6px 0; }
+.conv-row input[type=number] { width:110px; padding:6px 9px; border:1px solid var(--border); border-radius:6px; font-size:1rem; }
+.conv-row select { padding:6px 9px; border:1px solid var(--border); border-radius:6px; font-size:0.9rem; background:#fff; }
+#convResult { font-weight:700; font-size:1.15rem; color:var(--blue); margin-top:6px; min-height:1.5em; }
+
+/* GRID */
+#areaGrid {
+  display:grid; grid-template-columns:repeat(10,28px); gap:1px;
+  background:var(--border); border:1px solid var(--border);
+  margin:10px 0; width:fit-content;
+}
+.gc { width:28px; height:28px; background:#fff; cursor:pointer; transition:background .1s; }
+.gc.on { background:#60a5fa; }
+#areaCount { font-weight:600; font-size:0.95rem; }
+
+/* RECT SLIDERS */
+.rect-ctrl { background:#f0f9ff; border:1px solid #bae6fd; border-radius:8px; padding:12px; margin:10px 0; }
+.rect-row { display:flex; align-items:center; gap:10px; margin:5px 0; font-size:0.9rem; }
+#rectResult { font-weight:600; font-size:1rem; margin-top:6px; min-height:1.4em; }
+
+/* QUIZ */
+.qz-section { border-left-color: var(--red) !important; }
+.qz-section h2 { color: var(--red) !important; }
+.qz-q { background:#f8fafc; border:1px solid var(--border); border-radius:8px; padding:14px; margin:10px 0; }
+.qz-q .qt { font-weight:700; margin-bottom:9px; }
+.qz-opt { display:flex; align-items:center; gap:8px; padding:5px 7px; border-radius:5px; cursor:pointer; transition:background .12s; margin:2px 0; }
+.qz-opt:hover { background:#e0e7ff; }
+.qz-opt input[type=radio] { cursor:pointer; width:15px; height:15px; }
+.qz-opt.correct { background:#dcfce7 !important; }
+.qz-opt.wrong   { background:#fee2e2 !important; }
+.qz-fb { margin-top:7px; font-size:0.83rem; font-style:italic; display:none; }
+.qz-result { background:linear-gradient(135deg,#1e40af,#6d28d9); color:#fff; border-radius:12px; padding:22px; text-align:center; margin-top:20px; }
+.qz-result h3 { font-size:1.8rem; color:#fff; margin-bottom:6px; }
+
+/* PRACTICE */
+ol { padding-left:22px; }
+ol li { margin:6px 0; }
+h3.sub { color:var(--blue); font-size:0.98rem; margin:14px 0 4px; border-bottom:1px solid var(--border); padding-bottom:3px; }
+
+/* TOC badge */
+.toc-badge { display:inline-block; background:linear-gradient(135deg,#1e3a8a,#6d28d9); color:#fff; border-radius:10px; padding:2px 10px; font-size:0.78rem; margin-right:6px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <h1>📐 Geometrie — 5. Klasse Gymnasium &nbsp;<span style="font-weight:300;font-size:0.85rem;opacity:0.8">Zusammenfassung &amp; Übungen</span></h1>
+  <div class="nav-links">
+    <a href="#k1">1 Koordinaten</a>
+    <a href="#k2">2 Strecken</a>
+    <a href="#k3">3 Geraden/⊥</a>
+    <a href="#k4">4 Abstand</a>
+    <a href="#k5">5 Parallelität</a>
+    <a href="#k6">6 Vielecke</a>
+    <a href="#k7">7 Vierecke</a>
+    <a href="#k8">8 Flächen</a>
+    <a href="#k9">9 Einheiten</a>
+    <a href="#k10">10 Rechteck</a>
+    <a href="#k11">11 Rechnen</a>
+    <a href="#k12">12 Zusammengesetzt</a>
+    <a href="#quiz">🎯 Quiz</a>
+    <a href="#aufgaben">✏️ Aufgaben</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- ═══════════════════════════════════════════════════
+     1. KOORDINATENSYSTEM
+════════════════════════════════════════════════════ -->
+<section class="section" id="k1">
+  <h2>🗺️ 1. Punkte im Koordinatensystem</h2>
+  <p>Das <strong>Koordinatensystem</strong> besteht aus zwei senkrecht zueinander stehenden Zahlengeraden, die sich im <strong>Ursprung O(0|0)</strong> schneiden.</p>
+
+  <div class="info">
+    <strong>Die wichtigsten Begriffe:</strong><br>
+    • <strong>x-Achse</strong> — die waagerechte Zahlengerade (→)<br>
+    • <strong>y-Achse</strong> — die senkrechte Zahlengerade (↑)<br>
+    • <strong>Ursprung O(0|0)</strong> — Schnittpunkt beider Achsen<br>
+    • <strong>Punkt P(x|y)</strong> — x = wie weit rechts/links, y = wie weit oben/unten
+  </div>
+
+  <div class="ok">
+    <strong>Koordinaten ablesen — so geht's:</strong><br>
+    1. Vom Punkt senkrecht auf die x-Achse → das ist die x-Koordinate<br>
+    2. Vom Punkt waagerecht auf die y-Achse → das ist die y-Koordinate<br>
+    📌 Beispiel: <em>P(3|2)</em> → 3 Einheiten nach <u>rechts</u>, 2 Einheiten nach <u>oben</u>
+  </div>
+
+  <div class="cv-wrap">
+    <canvas id="cvCoord" width="500" height="380"></canvas>
+  </div>
+  <p class="hint">👆 Klicke ins Koordinatensystem, um eigene Punkte einzutragen (max. 5).</p>
+
+  <div class="warn">
+    <strong>Merke:</strong> Negative x-Werte → links &nbsp;|&nbsp; Negative y-Werte → unten<br>
+    A(–2|3): 2 nach <em>links</em>, 3 nach <em>oben</em>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     2. STRECKEN
+════════════════════════════════════════════════════ -->
+<section class="section" id="k2">
+  <h2>📏 2. Strecken und ihre Längen</h2>
+  <p>Eine <strong>Strecke AB</strong> ist der Teil einer Geraden zwischen zwei Punkten A und B — sie hat einen Anfang und ein Ende.</p>
+
+  <div class="info">
+    <strong>Begriffe im Vergleich:</strong>
+    <table>
+      <tr><th>Name</th><th>Eigenschaft</th><th>Symbol</th></tr>
+      <tr><td>Strecke AB</td><td>Anfangs- und Endpunkt</td><td>|——|</td></tr>
+      <tr><td>Strahl AB</td><td>Anfangspunkt, unendlich in eine Richtung</td><td>|———→</td></tr>
+      <tr><td>Gerade g</td><td>Unendlich in beide Richtungen</td><td>←———→</td></tr>
+    </table>
+  </div>
+
+  <div class="formula">
+    Länge einer <u>waagerechten</u> Strecke: |AB| = |x₂ − x₁|<br>
+    Länge einer <u>senkrechten</u> Strecke: |AB| = |y₂ − y₁|
+  </div>
+
+  <div class="cv-wrap">
+    <canvas id="cvStrecken" width="500" height="280"></canvas>
+  </div>
+
+  <div class="ok">
+    <strong>Beispiele:</strong><br>
+    A(1|3) und B(6|3): waagerecht → |AB| = |6−1| = <strong>5 Einheiten</strong><br>
+    C(4|1) und D(4|5): senkrecht → |CD| = |5−1| = <strong>4 Einheiten</strong>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     3. GERADEN / ORTHOGONAL
+════════════════════════════════════════════════════ -->
+<section class="section" id="k3">
+  <h2>📐 3. Geraden und orthogonale Geraden</h2>
+  <p>Eine <strong>Gerade</strong> ist eine unendlich lange, gerade Linie ohne Anfang und Ende. Man benennt sie meist mit kleinen Buchstaben: <em>g, h, k</em>.</p>
+
+  <h3>Orthogonale Geraden (senkrecht zueinander)</h3>
+  <p>Zwei Geraden sind <strong>orthogonal</strong>, wenn sie sich unter einem Winkel von genau <strong>90°</strong> schneiden.</p>
+
+  <div class="formula">g ⊥ h &nbsp;⟺&nbsp; Geraden g und h stehen senkrecht aufeinander (90°)</div>
+
+  <div class="cv-wrap">
+    <canvas id="cvGeraden" width="500" height="280"></canvas>
+  </div>
+
+  <div class="info">
+    <strong>Erkennen &amp; Zeichnen:</strong><br>
+    • Das kleine Quadrat □ am Schnittpunkt = Zeichen für 90°<br>
+    • Mit dem Geodreieck prüfen: Lege die 90°-Kante an — stimmt sie mit beiden Geraden überein?
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     4. ABSTAND PUNKT – GERADE
+════════════════════════════════════════════════════ -->
+<section class="section" id="k4">
+  <h2>📍 4. Abstand eines Punktes von einer Geraden</h2>
+  <p>Der <strong>Abstand d(P, g)</strong> ist die <strong>kürzeste Entfernung</strong> vom Punkt P zur Geraden g.</p>
+
+  <div class="formula">d(P, g) = Länge des Lots von P auf g</div>
+
+  <div class="info">
+    Das <strong>Lot</strong> ist die senkrechte Strecke von P auf g. Der Schnittpunkt heißt <strong>Lotfußpunkt P'</strong>.<br>
+    Das Lot steht immer <strong>⊥</strong> auf der Geraden (90°-Winkel am Fußpunkt).
+  </div>
+
+  <div class="cv-wrap">
+    <canvas id="cvAbstand" width="500" height="260"></canvas>
+  </div>
+  <div class="slider-row">
+    <label>Abstand verschieben:</label>
+    <input type="range" id="slAbstand" min="20" max="120" value="70">
+    <span id="lblAbstand" style="font-weight:600; color:var(--green);"></span>
+  </div>
+
+  <div class="ok">
+    <strong>So zeichnest du das Lot:</strong><br>
+    1. Lege das Geodreieck so an g, dass die 90°-Linie durch P verläuft<br>
+    2. Zeichne eine senkrechte Linie von P bis zu g — das ist das Lot<br>
+    3. Markiere den Fußpunkt P' (mit kleinem Quadrat)<br>
+    4. Miss die Strecke P–P' → das ist d(P, g)
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     5. PARALLELITÄT
+════════════════════════════════════════════════════ -->
+<section class="section" id="k5">
+  <h2>➡️ 5. Parallelität von Geraden</h2>
+  <p>Zwei Geraden in einer Ebene heißen <strong>parallel</strong>, wenn sie sich <strong>niemals schneiden</strong>, egal wie weit man sie verlängert.</p>
+
+  <div class="formula">g ∥ h &nbsp;⟺&nbsp; g und h schneiden sich nie – sie haben überall den gleichen Abstand</div>
+
+  <div class="cv-wrap">
+    <canvas id="cvParallel" width="500" height="260"></canvas>
+  </div>
+  <div class="slider-row">
+    <label>Abstand der Geraden:</label>
+    <input type="range" id="slParallel" min="30" max="140" value="80">
+    <span id="lblParallel" style="font-weight:600; color:var(--green);"></span>
+  </div>
+
+  <div class="info">
+    <strong>Eigenschaften:</strong><br>
+    • Überall der <strong>gleiche Abstand</strong><br>
+    • Verlaufen in dieselbe <strong>Richtung</strong><br>
+    • Schneiden sich <strong>nie</strong>
+  </div>
+  <div class="warn">
+    <strong>Merkhilfe aus dem Alltag:</strong> Bahnschienen, Linien eines Notizblocks, gegenüberliegende Rechteckseiten — alles parallele Geraden!
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     6. VIELECKE
+════════════════════════════════════════════════════ -->
+<section class="section" id="k6">
+  <h2>🔷 6. Vielecke — Umfang und Diagonalen</h2>
+  <p>Ein <strong>Vieleck (Polygon)</strong> ist eine geschlossene ebene Figur, die aus geraden Strecken besteht.</p>
+
+  <table>
+    <tr><th>Ecken</th><th>Name</th><th>Diagonalen n·(n–3)/2</th></tr>
+    <tr><td>3</td><td>Dreieck</td><td>0</td></tr>
+    <tr><td>4</td><td>Viereck</td><td>2</td></tr>
+    <tr><td>5</td><td>Fünfeck</td><td>5</td></tr>
+    <tr><td>6</td><td>Sechseck</td><td>9</td></tr>
+    <tr><td>8</td><td>Achteck</td><td>20</td></tr>
+  </table>
+
+  <div class="formula">
+    Umfang U = a + b + c + d + … (alle Seiten addieren)<br>
+    Diagonalenanzahl = n · (n − 3) / 2
+  </div>
+
+  <div class="info">
+    Eine <strong>Diagonale</strong> verbindet zwei <em>nicht benachbarte</em> Ecken. Seiten selbst zählen nicht als Diagonalen!
+  </div>
+
+  <div class="cv-wrap">
+    <canvas id="cvVieleck" width="500" height="280"></canvas>
+  </div>
+  <div class="btn-row">
+    <button class="btn b-blue" onclick="drawPoly(3)">Dreieck</button>
+    <button class="btn b-blue" onclick="drawPoly(4)">Viereck</button>
+    <button class="btn b-blue" onclick="drawPoly(5)">Fünfeck</button>
+    <button class="btn b-blue" onclick="drawPoly(6)">Sechseck</button>
+    <button class="btn b-blue" onclick="drawPoly(8)">Achteck</button>
+  </div>
+  <div id="polyInfo" class="hint" style="font-size:0.9rem; margin-top:4px;"></div>
+
+  <div class="ok">
+    <strong>Beispiel Viereck (n=4):</strong> Diagonalen = 4·(4–3)/2 = 4·1/2 = <strong>2</strong> ✓
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     7. BESONDERE VIERECKE
+════════════════════════════════════════════════════ -->
+<section class="section" id="k7">
+  <h2>🔲 7. Besondere Vierecke</h2>
+
+  <div class="btn-row">
+    <button class="btn b-blue"   onclick="showShape('trapez')">Trapez</button>
+    <button class="btn b-purple" onclick="showShape('pg')" style="background:var(--purple);color:#fff;">Parallelogramm</button>
+    <button class="btn b-red"    onclick="showShape('raute')" style="background:var(--red);color:#fff;">Raute</button>
+    <button class="btn b-green"  onclick="showShape('rect')">Rechteck</button>
+    <button class="btn b-orange" onclick="showShape('sq')" style="background:var(--orange);color:#fff;">Quadrat</button>
+  </div>
+  <div class="cv-wrap">
+    <canvas id="cvShape" width="500" height="230"></canvas>
+  </div>
+  <div id="shapeInfo" class="info" style="min-height:60px;">Wähle oben ein Viereck!</div>
+
+  <h3>Vergleichstabelle</h3>
+  <table>
+    <tr><th>Viereck</th><th>Parallele Seiten</th><th>Seiten gleich lang</th><th>Winkel alle 90°</th><th>Diagonalen ⊥</th></tr>
+    <tr><td><strong>Trapez</strong></td>        <td>1 Paar</td><td>–</td><td>–</td><td>–</td></tr>
+    <tr><td><strong>Parallelogramm</strong></td><td>2 Paare</td><td>je 2 gegenüber</td><td>–</td><td>–</td></tr>
+    <tr><td><strong>Raute</strong></td>          <td>2 Paare</td><td>alle 4</td><td>–</td><td>✓</td></tr>
+    <tr><td><strong>Rechteck</strong></td>       <td>2 Paare</td><td>je 2 gegenüber</td><td>✓</td><td>–</td></tr>
+    <tr><td><strong>Quadrat</strong></td>        <td>2 Paare</td><td>alle 4</td><td>✓</td><td>✓</td></tr>
+  </table>
+
+  <div class="warn">
+    <strong>Hierarchie:</strong> Quadrat ⊂ Rechteck ⊂ Parallelogramm ⊂ Trapez<br>
+    (Jede spezielle Form ist auch ein allgemeines Viereck!)
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     8. FLÄCHENINHALT VERGLEICHEN
+════════════════════════════════════════════════════ -->
+<section class="section" id="k8">
+  <h2>🟦 8. Größenvergleich von Flächen</h2>
+  <p>Der <strong>Flächeninhalt</strong> gibt an, wie viel Fläche eine ebene Figur einnimmt. Man misst ihn in <em>Einheitsquadraten</em>.</p>
+
+  <div class="info">
+    <strong>Methoden zum Vergleichen von Flächen:</strong><br>
+    1. <strong>Ausfüllen &amp; Zählen</strong> — Einheitsquadrate auszählen<br>
+    2. <strong>Zerlegen</strong> — in einfache Teile aufteilen<br>
+    3. <strong>Umordnen</strong> — Teile verschieben (Flächeninhalt bleibt gleich!)<br>
+    4. <strong>Berechnen</strong> — mit Formeln (bei Rechtecken etc.)
+  </div>
+
+  <p>Klicke auf die Felder, um eine Fläche einzufärben und zu messen:</p>
+  <div id="areaGrid"></div>
+  <div id="areaCount">Ausgefüllte Felder: 0 cm² (wenn 1 Feld = 1 cm²)</div>
+  <button class="btn b-orange" onclick="clearGrid()" style="margin-top:7px;">Löschen ↺</button>
+
+  <div class="formula" style="margin-top:14px;">Flächeninhalt A = Anzahl der Einheitsquadrate × (Seitenlänge)²</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     9. FLÄCHENEINHEITEN
+════════════════════════════════════════════════════ -->
+<section class="section" id="k9">
+  <h2>📊 9. Flächeninhaltseinheiten und Umrechnen</h2>
+
+  <div class="formula">km² &nbsp;→&nbsp; ha &nbsp;→&nbsp; a &nbsp;→&nbsp; m² &nbsp;→&nbsp; dm² &nbsp;→&nbsp; cm² &nbsp;→&nbsp; mm²</div>
+
+  <table>
+    <tr><th>Einheit</th><th>Abk.</th><th>Umrechnung</th><th>Alltagsbezug</th></tr>
+    <tr><td>Quadratkilometer</td><td>km²</td><td>= 100 ha</td><td>Stadtgebiet</td></tr>
+    <tr><td>Hektar</td><td>ha</td><td>= 100 a = 10 000 m²</td><td>Fußballfeld ≈ 1 ha</td></tr>
+    <tr><td>Ar</td><td>a</td><td>= 100 m²</td><td>kleines Grundstück</td></tr>
+    <tr><td>Quadratmeter</td><td>m²</td><td>= 100 dm²</td><td>Tischfläche</td></tr>
+    <tr><td>Quadratdezimeter</td><td>dm²</td><td>= 100 cm²</td><td>Heft-Seite ≈ 6 dm²</td></tr>
+    <tr><td>Quadratzentimeter</td><td>cm²</td><td>= 100 mm²</td><td>Fingernagel ≈ 1 cm²</td></tr>
+    <tr><td>Quadratmillimeter</td><td>mm²</td><td>kleinste hier</td><td>Stecknadelkopf</td></tr>
+  </table>
+
+  <div class="info">
+    <strong>Warum immer ×100?</strong><br>
+    1 m = 10 dm, aber 1 m² = 10 dm × 10 dm = <strong>100 dm²</strong><br>
+    Beim Flächeninhalt geht die Seitenlänge <strong>im Quadrat</strong> ein!
+  </div>
+
+  <div class="cv-wrap">
+    <canvas id="cvUmrechnung" width="620" height="190"></canvas>
+  </div>
+
+  <h3>🔄 Interaktiver Umrechner</h3>
+  <div class="conv-box">
+    <div class="conv-row">
+      <input type="number" id="convIn" placeholder="Zahl eingeben" oninput="doConv()">
+      <select id="convFrom" onchange="doConv()">
+        <option value="0">km²</option><option value="1">ha</option>
+        <option value="2">a</option><option value="3" selected>m²</option>
+        <option value="4">dm²</option><option value="5">cm²</option><option value="6">mm²</option>
+      </select>
+      <span style="font-size:1.1rem;">=</span>
+      <select id="convTo" onchange="doConv()">
+        <option value="0">km²</option><option value="1">ha</option>
+        <option value="2">a</option><option value="3">m²</option>
+        <option value="4">dm²</option><option value="5" selected>cm²</option><option value="6">mm²</option>
+      </select>
+    </div>
+    <div id="convResult">— Zahl eingeben —</div>
+  </div>
+
+  <div class="ok">
+    <strong>Beispiele:</strong><br>
+    3,5 m² × 100 = <strong>350 dm²</strong><br>
+    250 cm² ÷ 100 = <strong>2,5 dm²</strong><br>
+    1 km² = 100 ha = 10 000 a = 1 000 000 m²
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     10. RECHTECK
+════════════════════════════════════════════════════ -->
+<section class="section" id="k10">
+  <h2>⬛ 10. Flächeninhalt und Umfang eines Rechtecks</h2>
+
+  <div class="formula">
+    Flächeninhalt: A = a · b &nbsp;&nbsp;(Länge × Breite)<br>
+    Umfang: U = 2 · (a + b) = 2a + 2b
+  </div>
+
+  <div class="info">
+    <strong>Merkhilfe:</strong> Stell dir das Rechteck als Kachelboden vor. Es gibt b Reihen, jede mit a Kacheln → a · b Kacheln insgesamt.
+  </div>
+
+  <div class="rect-ctrl">
+    <div class="rect-row"><label>Länge a:</label><input type="range" id="slA" min="1" max="18" value="8" oninput="updateRect()"><span id="lblA">8</span> cm</div>
+    <div class="rect-row"><label>Breite b:</label><input type="range" id="slB" min="1" max="12" value="5" oninput="updateRect()"><span id="lblB">5</span> cm</div>
+  </div>
+  <div class="cv-wrap">
+    <canvas id="cvRect" width="500" height="270"></canvas>
+  </div>
+  <div id="rectResult"></div>
+
+  <h3>Quadrat als Sonderfall</h3>
+  <div class="formula">Quadrat (a = b): &nbsp; A = a² &nbsp;&nbsp;|&nbsp;&nbsp; U = 4 · a</div>
+
+  <div class="ok">
+    <strong>Beispiele:</strong><br>
+    Rechteck a=6 cm, b=4 cm: A = 24 cm², U = 20 cm<br>
+    Quadrat a=5 cm: A = 25 cm², U = 20 cm
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     11. RECHNEN MIT EINHEITEN
+════════════════════════════════════════════════════ -->
+<section class="section" id="k11">
+  <h2>🔢 11. Rechnen mit Flächeneinheiten</h2>
+
+  <div class="info">
+    <strong>Goldene Regel:</strong> Vor jeder Rechnung alle Angaben in <em>dieselbe Einheit</em> umrechnen!<br>
+    Vorgehen: Einheit wählen → alles umrechnen → rechnen → Ergebnis ggf. sinnvoll umschreiben
+  </div>
+
+  <div class="ok">
+    <strong>Beispiel 1 — Vergleich:</strong><br>
+    A₁ = 2,5 m² und A₂ = 300 dm² — welche ist größer?<br>
+    Umrechnen: 2,5 m² = 2,5 × 100 dm² = <strong>250 dm²</strong><br>
+    Vergleich: 250 dm² &lt; 300 dm² → <strong>A₂ ist größer</strong>
+  </div>
+  <div class="ok">
+    <strong>Beispiel 2 — Addition:</strong><br>
+    A₁ = 3,2 m² und A₂ = 85 dm²<br>
+    Umrechnen: 3,2 m² = 320 dm²<br>
+    Summe: 320 + 85 = <strong>405 dm²</strong> = 4,05 m²
+  </div>
+  <div class="ok">
+    <strong>Beispiel 3 — Landwirtschaft:</strong><br>
+    Ein Feld hat 3 ha und 25 a.<br>
+    3 ha = 300 a → Gesamt: 300 + 25 = 325 a = <strong>32 500 m²</strong>
+  </div>
+  <div class="warn">
+    <strong>Falle:</strong> 3 m² ≠ 300 cm²! &nbsp; 3 m² = 3 × 100 dm² = 300 dm² = 30 000 cm²<br>
+    (Zwei Stufen × 100 × 100 = × 10 000)
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     12. ZUSAMMENGESETZTE FLÄCHEN
+════════════════════════════════════════════════════ -->
+<section class="section" id="k12">
+  <h2>🧩 12. Strategien für zusammengesetzte Flächen</h2>
+  <p>Viele Flächen lassen sich aus einfachen Rechtecken zusammensetzen. Es gibt zwei Strategien:</p>
+
+  <div class="info">
+    <strong>Strategie 1: Zerlegen (Additiv)</strong><br>
+    Teile die Fläche in Rechtecke auf und <em>addiere</em> die Einzelflächen: A = A₁ + A₂ + …
+  </div>
+  <div class="info">
+    <strong>Strategie 2: Ergänzen (Subtraktiv)</strong><br>
+    Ergänze die Figur zu einem großen Rechteck und <em>subtrahiere</em> die fehlenden Teile: A = A_groß − A_abzug
+  </div>
+
+  <div class="btn-row">
+    <button class="btn b-blue"  onclick="showComposite('add')">Zerlegung (Additiv)</button>
+    <button class="btn b-orange" onclick="showComposite('sub')">Ergänzung (Subtraktiv)</button>
+  </div>
+  <div class="cv-wrap">
+    <canvas id="cvComposite" width="500" height="300"></canvas>
+  </div>
+  <div id="compositeInfo" class="ok" style="min-height:50px;">Wähle eine Strategie!</div>
+
+  <div class="warn" style="margin-top:12px;">
+    <strong>Tipp:</strong> Beide Methoden geben dasselbe Ergebnis — wähle die einfachere!<br>
+    Einfache L-Form → Ergänzung meist schneller. Viele kleine Teile → Zerlegung übersichtlicher.
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     QUIZ
+════════════════════════════════════════════════════ -->
+<section class="section qz-section" id="quiz">
+  <h2>🎯 Wissensquiz — 12 Fragen</h2>
+  <p>Beantworte alle Fragen, dann klicke auf <strong>"Auswerten"</strong>.</p>
+  <div id="quizBox"></div>
+  <div class="btn-row" style="margin-top:16px;">
+    <button class="btn b-green"  onclick="evalQuiz()" style="font-size:1rem; padding:10px 22px;">Quiz auswerten ✓</button>
+    <button class="btn b-orange" onclick="resetQuiz()" style="font-size:1rem; padding:10px 22px;">Zurücksetzen ↺</button>
+  </div>
+  <div id="quizResult"></div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     ÜBUNGSAUFGABEN
+════════════════════════════════════════════════════ -->
+<section class="section" id="aufgaben">
+  <h2>✏️ Übungsaufgaben</h2>
+
+  <h3 class="sub">Koordinatensystem</h3>
+  <ol>
+    <li>Zeichne ein Koordinatensystem und trage ein: A(4|3), B(–2|5), C(0|–4), D(–3|–2), E(5|0).</li>
+    <li>Lies Koordinaten ab und berechne alle achsenparallelen Streckenabschnitte zwischen je zwei benachbarten Punkten.</li>
+  </ol>
+
+  <h3 class="sub">Strecken und Geraden</h3>
+  <ol start="3">
+    <li>Zeichne eine Gerade g und einen Punkt P nicht auf g. Fälle das Lot von P auf g und messe den Abstand d(P,g).</li>
+    <li>Zeichne zwei parallele Geraden im Abstand 3 cm. Prüfe mit dem Geodreieck.</li>
+    <li>Zeichne zwei orthogonale Geraden und markiere den 90°-Winkel.</li>
+  </ol>
+
+  <h3 class="sub">Vielecke</h3>
+  <ol start="6">
+    <li>Ein regelmäßiges Sechseck hat Seitenlänge 4 cm. Berechne den Umfang.</li>
+    <li>Berechne die Diagonalenanzahl eines Fünfecks und eines Siebenecks mit der Formel.</li>
+    <li>Zeichne ein Parallelogramm (a = 6 cm, b = 4 cm) und trage beide Diagonalen ein.</li>
+  </ol>
+
+  <h3 class="sub">Flächeninhalt und Umfang</h3>
+  <ol start="9">
+    <li>Rechteck: a = 12 cm, b = 7 cm. Berechne A und U.</li>
+    <li>Quadrat: Umfang U = 36 cm. Berechne a und A.</li>
+    <li>Zimmer: 4,5 m × 3,8 m. Berechne Teppichfläche A und Wandumfang U.</li>
+  </ol>
+
+  <h3 class="sub">Einheiten umrechnen</h3>
+  <ol start="12">
+    <li>Rechne um: 5,2 m² = ___ dm² = ___ cm²</li>
+    <li>Rechne um: 75 000 m² = ___ ha = ___ km²</li>
+    <li>Rechne um: 3 ha 45 a = ___ m²</li>
+    <li>Welche Fläche ist größer: 2,3 m² oder 25 dm²? Begründung!</li>
+  </ol>
+
+  <h3 class="sub">Zusammengesetzte Flächen</h3>
+  <ol start="16">
+    <li>
+      Berechne die Fläche der L-Form (Maße in cm):<br>
+      <canvas id="cvAufgabe" width="300" height="190" style="display:block; margin:8px 0; border:1px solid var(--border); border-radius:6px;"></canvas>
+    </li>
+    <li>Rechteckiges Blumenbeet 8 m × 5 m, quadratisches Becken in der Mitte 1,5 m × 1,5 m. Berechne die Pflanzfläche.</li>
+    <li>L-förmige Terrasse: Außenmaße 10 m × 7 m, ausgeschnittene Ecke 4 m × 3 m. Berechne die Terrassenfläche.</li>
+  </ol>
+
+  <div id="solutions" style="display:none;" class="info" style="margin-top:14px;">
+    <strong>Lösungshinweise:</strong><br>
+    6: U = 24 cm &nbsp;|&nbsp; 7: Fünfeck 5, Siebeneck 14 &nbsp;|&nbsp; 9: A=84 cm², U=38 cm<br>
+    10: a=9 cm, A=81 cm² &nbsp;|&nbsp; 11: A=17,1 m², U=16,6 m<br>
+    12: 520 dm², 52 000 cm² &nbsp;|&nbsp; 13: 7,5 ha, 0,075 km² &nbsp;|&nbsp; 14: 34 500 m²<br>
+    15: 2,3 m²=230 dm² > 25 dm² &nbsp;|&nbsp; 17: 37,75 m² &nbsp;|&nbsp; 18: 58 m²
+  </div>
+  <button class="btn b-blue" onclick="toggleSol()" style="margin-top:10px;" id="solBtn">Lösungshinweise anzeigen</button>
+</section>
+
+</main>
+
+<!-- ═══════════════════════════════════════════════════  JAVASCRIPT ════════════════════════════════════════════════════ -->
+<script>
+// ─── HELPERS ─────────────────────────────────────────────────
+function bg(ctx, canvas, fill='#f8fafc') {
+  ctx.fillStyle = fill; ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+
+function drawGrid(ctx, w, h, ox, oy, sc) {
+  ctx.save();
+  ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = 0.5;
+  for (let x = ox % sc; x < w; x += sc) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,h); ctx.stroke(); }
+  for (let y = oy % sc; y < h; y += sc) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(w,y); ctx.stroke(); }
+  ctx.restore();
+}
+
+function drawAxes(ctx, w, h, ox, oy, sc) {
+  ctx.save();
+  ctx.strokeStyle = '#1e293b'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(0, oy); ctx.lineTo(w, oy); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(ox, 0); ctx.lineTo(ox, h); ctx.stroke();
+  // Arrowheads
+  ctx.fillStyle = '#1e293b';
+  ctx.beginPath(); ctx.moveTo(w-4, oy); ctx.lineTo(w-14, oy-5); ctx.lineTo(w-14, oy+5); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(ox, 4); ctx.lineTo(ox-5, 14); ctx.lineTo(ox+5, 14); ctx.fill();
+  // Labels
+  ctx.font = '13px sans-serif'; ctx.fillText('x', w-11, oy-6); ctx.fillText('y', ox+6, 11);
+  ctx.fillText('0', ox+4, oy+13);
+  // Ticks
+  ctx.font = '10px sans-serif'; ctx.fillStyle = '#64748b';
+  for (let i = -12; i <= 12; i++) {
+    if (i === 0) continue;
+    const px = ox + i*sc, py = oy - i*sc;
+    ctx.strokeStyle = '#1e293b'; ctx.lineWidth = 1;
+    if (px > 8 && px < w-8) {
+      ctx.beginPath(); ctx.moveTo(px, oy-3); ctx.lineTo(px, oy+3); ctx.stroke();
+      if (Math.abs(i) <= 7) ctx.fillText(i, px - (i < 0 ? 8 : 4), oy+13);
+    }
+    if (py > 8 && py < h-8) {
+      ctx.beginPath(); ctx.moveTo(ox-3, py); ctx.lineTo(ox+3, py); ctx.stroke();
+      if (Math.abs(i) <= 7) ctx.fillText(-i, ox+5, py+4);
+    }
+  }
+  ctx.restore();
+}
+
+function coordSys(ctx, canvas, sc=38, oxOff=null, oyOff=null) {
+  const w=canvas.width, h=canvas.height;
+  const ox = oxOff ?? Math.floor(w/2), oy = oyOff ?? Math.floor(h/2);
+  bg(ctx, canvas);
+  drawGrid(ctx, w, h, ox, oy, sc);
+  drawAxes(ctx, w, h, ox, oy, sc);
+  return {ox, oy, sc};
+}
+
+// ─── 1. KOORDINATENSYSTEM ───────────────────────────────────
+const cvCoord = document.getElementById('cvCoord');
+const ctCoord = cvCoord.getContext('2d');
+let userPts = [];
+
+const defPts = [
+  {x:3,  y:2,  l:'A', c:'#2563eb'},
+  {x:-2, y:4,  l:'B', c:'#7c3aed'},
+  {x:0,  y:-3, l:'C', c:'#dc2626'},
+  {x:-4, y:-2, l:'D', c:'#16a34a'},
+  {x:5,  y:0,  l:'E', c:'#d97706'},
+];
+
+function renderCoord() {
+  const {ox, oy, sc} = coordSys(ctCoord, cvCoord, 38);
+  function dot(gx, gy, label, col) {
+    const px = ox+gx*sc, py = oy-gy*sc;
+    ctCoord.fillStyle = col;
+    ctCoord.beginPath(); ctCoord.arc(px, py, 5, 0, 2*Math.PI); ctCoord.fill();
+    ctCoord.font = 'bold 12px sans-serif';
+    ctCoord.fillText(`${label}(${gx}|${gy})`, px+8, py-6);
+  }
+  defPts.forEach(p => dot(p.x, p.y, p.l, p.c));
+  userPts.forEach(p => dot(p.gx, p.gy, 'P', '#f97316'));
+}
+cvCoord.addEventListener('click', e => {
+  const r=cvCoord.getBoundingClientRect(), sc=38;
+  const ox=Math.floor(cvCoord.width/2), oy=Math.floor(cvCoord.height/2);
+  const gx=Math.round((e.clientX-r.left-ox)/sc);
+  const gy=Math.round((oy-(e.clientY-r.top))/sc);
+  userPts.push({gx, gy}); if (userPts.length>5) userPts.shift();
+  renderCoord();
+});
+renderCoord();
+
+// ─── 2. STRECKEN ────────────────────────────────────────────
+const cvStr = document.getElementById('cvStrecken');
+const ctStr = cvStr.getContext('2d');
+(function() {
+  const {ox, oy, sc} = coordSys(ctStr, cvStr, 40, 60, 160);
+  // A(1|3)→B(6|3) horizontal
+  const [ax,ay]=[ox+1*sc, oy-3*sc], [bx,by]=[ox+5*sc, oy-3*sc];
+  ctStr.strokeStyle='#2563eb'; ctStr.lineWidth=3;
+  ctStr.beginPath(); ctStr.moveTo(ax,ay); ctStr.lineTo(bx,by); ctStr.stroke();
+  [[ax,ay,'A(1|3)'],[bx,by,'B(5|3)']].forEach(([x,y,l])=>{
+    ctStr.fillStyle='#2563eb'; ctStr.beginPath(); ctStr.arc(x,y,5,0,2*Math.PI); ctStr.fill();
+    ctStr.font='bold 12px sans-serif'; ctStr.fillText(l,x+6,y-7);
+  });
+  ctStr.fillStyle='#2563eb'; ctStr.font='13px sans-serif';
+  ctStr.fillText('|AB| = 4 Einheiten',(ax+bx)/2-40,ay-12);
+  // C(3|0)→D(3|4) vertical
+  const [cx,cy]=[ox+3*sc, oy-0*sc], [dx,dy]=[ox+3*sc, oy-4*sc];
+  ctStr.strokeStyle='#dc2626'; ctStr.lineWidth=3;
+  ctStr.beginPath(); ctStr.moveTo(cx,cy); ctStr.lineTo(dx,dy); ctStr.stroke();
+  [[cx,cy,'C(3|0)'],[dx,dy,'D(3|4)']].forEach(([x,y,l])=>{
+    ctStr.fillStyle='#dc2626'; ctStr.beginPath(); ctStr.arc(x,y,5,0,2*Math.PI); ctStr.fill();
+    ctStr.font='bold 12px sans-serif'; ctStr.fillText(l,x+6,y+4);
+  });
+  ctStr.fillStyle='#dc2626'; ctStr.font='13px sans-serif';
+  ctStr.fillText('|CD| = 4 Einheiten',cx+8,(cy+dy)/2+4);
+})();
+
+// ─── 3. GERADEN / ORTHOGONAL ─────────────────────────────────
+const cvGer = document.getElementById('cvGeraden');
+const ctGer = cvGer.getContext('2d');
+(function() {
+  const w=cvGer.width, h=cvGer.height;
+  bg(ctGer, cvGer);
+  // Gerade g schräg
+  const gx1=50, gy1=h-50, gx2=w-50, gy2=70;
+  ctGer.strokeStyle='#2563eb'; ctGer.lineWidth=2.5;
+  ctGer.beginPath(); ctGer.moveTo(gx1,gy1); ctGer.lineTo(gx2,gy2); ctGer.stroke();
+  ctGer.fillStyle='#2563eb'; ctGer.font='bold 14px sans-serif';
+  ctGer.fillText('g', gx2-10, gy2-10);
+  // Berechne Mitte + Senkrechte
+  const mx=(gx1+gx2)/2, my=(gy1+gy2)/2;
+  const dx=(gx2-gx1), dy=(gy2-gy1), len=Math.hypot(dx,dy);
+  const nx=dx/len, ny=dy/len, px=-ny, py=nx;
+  ctGer.strokeStyle='#dc2626'; ctGer.lineWidth=2.5;
+  ctGer.beginPath(); ctGer.moveTo(mx-px*120,my-py*120); ctGer.lineTo(mx+px*120,my+py*120); ctGer.stroke();
+  ctGer.fillStyle='#dc2626'; ctGer.font='bold 14px sans-serif';
+  ctGer.fillText('h', mx+px*125, my+py*125);
+  // Right angle symbol
+  const s=12;
+  const p1x=mx+nx*s, p1y=my+ny*s;
+  const p2x=p1x+px*s, p2y=p1y+py*s;
+  const p3x=mx+px*s, p3y=my+py*s;
+  ctGer.strokeStyle='#1e293b'; ctGer.lineWidth=2;
+  ctGer.beginPath(); ctGer.moveTo(p1x,p1y); ctGer.lineTo(p2x,p2y); ctGer.lineTo(p3x,p3y); ctGer.stroke();
+  // Info text
+  ctGer.fillStyle='#1e293b'; ctGer.font='13px sans-serif';
+  ctGer.fillText('g ⊥ h  (Schnittwinkel = 90°)', 18, 22);
+  ctGer.fillStyle='#2563eb'; ctGer.font='14px sans-serif';
+  ctGer.fillText('g', gx1+5, gy1-8);
+})();
+
+// ─── 4. ABSTAND ──────────────────────────────────────────────
+const cvAbs = document.getElementById('cvAbstand');
+const ctAbs = cvAbs.getContext('2d');
+function drawAbstand(dist) {
+  const w=cvAbs.width, h=cvAbs.height, gy=175;
+  bg(ctAbs, cvAbs);
+  // Gerade g
+  ctAbs.strokeStyle='#2563eb'; ctAbs.lineWidth=2.5;
+  ctAbs.beginPath(); ctAbs.moveTo(30,gy); ctAbs.lineTo(w-30,gy); ctAbs.stroke();
+  ctAbs.fillStyle='#2563eb'; ctAbs.font='bold 14px sans-serif'; ctAbs.fillText('g',w-22,gy+5);
+  // Punkt P
+  const px=250, py=gy-dist;
+  ctAbs.fillStyle='#dc2626'; ctAbs.beginPath(); ctAbs.arc(px,py,6,0,2*Math.PI); ctAbs.fill();
+  ctAbs.fillStyle='#dc2626'; ctAbs.font='bold 14px sans-serif'; ctAbs.fillText('P',px+10,py-5);
+  // Lot (gestrichelt)
+  ctAbs.strokeStyle='#16a34a'; ctAbs.lineWidth=2; ctAbs.setLineDash([6,3]);
+  ctAbs.beginPath(); ctAbs.moveTo(px,py); ctAbs.lineTo(px,gy); ctAbs.stroke();
+  ctAbs.setLineDash([]);
+  // Lotfußpunkt P'
+  ctAbs.fillStyle='#16a34a'; ctAbs.beginPath(); ctAbs.arc(px,gy,5,0,2*Math.PI); ctAbs.fill();
+  ctAbs.fillStyle='#16a34a'; ctAbs.font='bold 13px sans-serif'; ctAbs.fillText("P'",px+7,gy+14);
+  // 90°-Symbol
+  const sq=10;
+  ctAbs.strokeStyle='#1e293b'; ctAbs.lineWidth=1.5;
+  ctAbs.beginPath(); ctAbs.moveTo(px+sq,gy); ctAbs.lineTo(px+sq,gy-sq); ctAbs.lineTo(px,gy-sq); ctAbs.stroke();
+  // Pfeil + Beschriftung
+  ctAbs.fillStyle='#16a34a'; ctAbs.font='bold 12px sans-serif';
+  ctAbs.fillText(`d = ${dist} Einheiten`, px+15, py+dist/2+4);
+  document.getElementById('lblAbstand').textContent = `Abstand: ${dist} Einheiten`;
+}
+document.getElementById('slAbstand').addEventListener('input', e => drawAbstand(+e.target.value));
+drawAbstand(70);
+
+// ─── 5. PARALLEL ─────────────────────────────────────────────
+const cvPar = document.getElementById('cvParallel');
+const ctPar = cvPar.getContext('2d');
+function drawParallel(gap) {
+  const w=cvPar.width, h=cvPar.height, cy=h/2;
+  bg(ctPar, cvPar);
+  const y1=cy-gap/2, y2=cy+gap/2;
+  [['g','#2563eb',y1],['h','#dc2626',y2]].forEach(([l,c,y])=>{
+    ctPar.strokeStyle=c; ctPar.lineWidth=2.5;
+    ctPar.beginPath(); ctPar.moveTo(30,y); ctPar.lineTo(w-30,y); ctPar.stroke();
+    ctPar.fillStyle=c; ctPar.font='bold 14px sans-serif'; ctPar.fillText(l,w-22,y+5);
+  });
+  // Distance arrow at x=80 and x=320
+  [80, 300].forEach((ax, i) => {
+    ctPar.strokeStyle='#16a34a'; ctPar.lineWidth=1.5;
+    ctPar.beginPath(); ctPar.moveTo(ax,y1+4); ctPar.lineTo(ax,y2-4); ctPar.stroke();
+    [[ax,y1+4,-1],[ax,y2-4,1]].forEach(([x,y,d])=>{
+      ctPar.fillStyle='#16a34a'; ctPar.beginPath(); ctPar.moveTo(x,y); ctPar.lineTo(x-4,y+d*7); ctPar.lineTo(x+4,y+d*7); ctPar.fill();
+    });
+    ctPar.fillStyle='#16a34a'; ctPar.font=(i===0?'bold ':'')+'11px sans-serif';
+    ctPar.fillText(`d=${gap}px`, ax+5, (y1+y2)/2+4);
+  });
+  ctPar.fillStyle='#1e293b'; ctPar.font='13px sans-serif';
+  ctPar.fillText('g ∥ h   — überall gleicher Abstand!', 30, 22);
+  document.getElementById('lblParallel').textContent = `Abstand: ${gap} px`;
+}
+document.getElementById('slParallel').addEventListener('input', e => drawParallel(+e.target.value));
+drawParallel(80);
+
+// ─── 6. VIELECK ──────────────────────────────────────────────
+const cvViel = document.getElementById('cvVieleck');
+const ctViel = cvViel.getContext('2d');
+const polyNames = ['','','','Dreieck','Viereck','Fünfeck','Sechseck','Siebeneck','Achteck'];
+function drawPoly(n) {
+  const w=cvViel.width, h=cvViel.height, cx=200, cy=h/2, r=105;
+  bg(ctViel, cvViel);
+  const pts = Array.from({length:n}, (_,i) => {
+    const a = -Math.PI/2 + 2*Math.PI*i/n;
+    return [cx+r*Math.cos(a), cy+r*Math.sin(a)];
+  });
+  // Fill
+  ctViel.fillStyle='#eff6ff'; ctViel.beginPath();
+  ctViel.moveTo(pts[0][0],pts[0][1]); pts.forEach(([x,y])=>ctViel.lineTo(x,y));
+  ctViel.closePath(); ctViel.fill();
+  // Diagonals
+  ctViel.strokeStyle='#dc2626'; ctViel.lineWidth=1; ctViel.setLineDash([4,3]);
+  for (let i=0;i<n;i++) for (let j=i+2;j<n;j++) {
+    if (i===0 && j===n-1) continue;
+    ctViel.beginPath(); ctViel.moveTo(pts[i][0],pts[i][1]); ctViel.lineTo(pts[j][0],pts[j][1]); ctViel.stroke();
+  }
+  ctViel.setLineDash([]);
+  // Outline
+  ctViel.strokeStyle='#2563eb'; ctViel.lineWidth=2.5; ctViel.beginPath();
+  ctViel.moveTo(pts[0][0],pts[0][1]); pts.forEach(([x,y])=>ctViel.lineTo(x,y));
+  ctViel.closePath(); ctViel.stroke();
+  // Vertices
+  'ABCDEFGH'.split('').slice(0,n).forEach((l,i) => {
+    const [x,y]=pts[i];
+    ctViel.fillStyle='#2563eb'; ctViel.beginPath(); ctViel.arc(x,y,5,0,2*Math.PI); ctViel.fill();
+    const lx=cx+(r+18)*Math.cos(-Math.PI/2+2*Math.PI*i/n);
+    const ly=cy+(r+18)*Math.sin(-Math.PI/2+2*Math.PI*i/n);
+    ctViel.fillStyle='#1e293b'; ctViel.font='bold 12px sans-serif'; ctViel.fillText(l,lx-4,ly+4);
+  });
+  // Info panel
+  const d=n*(n-3)/2;
+  const ix=370, iy=30;
+  ctViel.fillStyle='#fff'; ctViel.fillRect(ix,iy,120,110);
+  ctViel.strokeStyle='var(--border)'; ctViel.lineWidth=1; ctViel.strokeRect(ix,iy,120,110);
+  ctViel.fillStyle='#1e293b'; ctViel.font='bold 13px sans-serif'; ctViel.fillText(polyNames[n]||`${n}-Eck`,ix+8,iy+22);
+  ctViel.font='12px sans-serif';
+  ctViel.fillText(`Ecken: ${n}`, ix+8, iy+42);
+  ctViel.fillText(`Seiten: ${n}`, ix+8, iy+58);
+  ctViel.fillStyle='#dc2626';
+  ctViel.fillText(`Diagonalen: ${d}`, ix+8, iy+74);
+  ctViel.font='10px sans-serif'; ctViel.fillStyle='#64748b';
+  ctViel.fillText(`${n}·(${n}-3)/2=${d}`, ix+8, iy+90);
+  document.getElementById('polyInfo').textContent = `${polyNames[n]||n+'-Eck'}: ${n} Ecken, ${n} Seiten, ${d} Diagonalen (rot)`;
+}
+drawPoly(5);
+
+// ─── 7. VIERECKE ─────────────────────────────────────────────
+const cvSh = document.getElementById('cvShape');
+const ctSh = cvSh.getContext('2d');
+const shapes = {
+  trapez: {
+    pts:[[90,190],[280,190],[250,80],[130,80]],
+    col:'#2563eb', title:'Trapez',
+    info:'<strong>Trapez</strong><br>• Genau <em>ein</em> Paar parallele Seiten (a ∥ c)<br>• Die anderen beiden Seiten (b, d) sind die Schenkel<br>• Umfang: U = a + b + c + d'
+  },
+  pg: {
+    pts:[[80,190],[270,190],[310,80],[120,80]],
+    col:'#7c3aed', title:'Parallelogramm',
+    info:'<strong>Parallelogramm</strong><br>• Zwei Paare paralleler Seiten: a ∥ c und b ∥ d<br>• Gegenüber liegende Seiten gleich lang<br>• Gegenüber liegende Winkel gleich groß<br>• Umfang: U = 2·(a + b)'
+  },
+  raute: {
+    pts:[[200,55],[305,155],[200,255],[95,155]],
+    col:'#dc2626', title:'Raute (Rhombus)',
+    info:'<strong>Raute</strong><br>• Alle vier Seiten gleich lang (a = b = c = d)<br>• Ein Parallelogramm mit a = b<br>• Diagonalen stehen senkrecht aufeinander (⊥)<br>• Diagonalen halbieren sich gegenseitig<br>• Umfang: U = 4·a'
+  },
+  rect: {
+    pts:[[75,195],[320,195],[320,80],[75,80]],
+    col:'#16a34a', title:'Rechteck',
+    info:'<strong>Rechteck</strong><br>• Alle vier Winkel = 90°<br>• Parallelogramm mit rechten Winkeln<br>• Gegenüber liegende Seiten gleich lang<br>• Diagonalen gleich lang<br>• A = a·b,   U = 2·(a + b)'
+  },
+  sq: {
+    pts:[[115,200],[285,200],[285,30],[115,30]],
+    col:'#d97706', title:'Quadrat',
+    info:'<strong>Quadrat</strong><br>• Alle vier Seiten gleich lang UND alle Winkel 90°<br>• Ist gleichzeitig Rechteck + Raute<br>• Diagonalen gleich lang <em>und</em> senkrecht aufeinander<br>• A = a²,   U = 4·a'
+  }
+};
+function showShape(k) {
+  const {pts, col, title, info} = shapes[k];
+  const w=cvSh.width, h=cvSh.height;
+  bg(ctSh, cvSh);
+  ctSh.fillStyle=col+'22'; ctSh.beginPath();
+  ctSh.moveTo(pts[0][0],pts[0][1]); pts.forEach(([x,y])=>ctSh.lineTo(x,y));
+  ctSh.closePath(); ctSh.fill();
+  ctSh.strokeStyle=col; ctSh.lineWidth=3; ctSh.beginPath();
+  ctSh.moveTo(pts[0][0],pts[0][1]); pts.forEach(([x,y])=>ctSh.lineTo(x,y));
+  ctSh.closePath(); ctSh.stroke();
+  'ABCD'.split('').forEach((l,i)=>{
+    const [x,y]=pts[i];
+    ctSh.fillStyle=col; ctSh.beginPath(); ctSh.arc(x,y,5,0,2*Math.PI); ctSh.fill();
+    ctSh.font='bold 12px sans-serif'; ctSh.fillText(l,x+7,y-5);
+  });
+  // Side labels
+  'abcd'.split('').forEach((l,i)=>{
+    const [x1,y1]=pts[i],[x2,y2]=pts[(i+1)%4];
+    const mx=(x1+x2)/2+(y2-y1)*0.08, my=(y1+y2)/2-(x2-x1)*0.08;
+    ctSh.fillStyle='#64748b'; ctSh.font='italic 12px sans-serif'; ctSh.fillText(l,mx,my);
+  });
+  // Right angles for rect/sq
+  if (k==='rect'||k==='sq') {
+    pts.forEach(([x,y],i)=>{
+      const prev=pts[(i+3)%4], next=pts[(i+1)%4];
+      const len1=Math.hypot(prev[0]-x,prev[1]-y), len2=Math.hypot(next[0]-x,next[1]-y);
+      const d1x=(prev[0]-x)/len1*11, d1y=(prev[1]-y)/len1*11;
+      const d2x=(next[0]-x)/len2*11, d2y=(next[1]-y)/len2*11;
+      ctSh.strokeStyle='#1e293b'; ctSh.lineWidth=1.5;
+      ctSh.beginPath(); ctSh.moveTo(x+d1x,y+d1y); ctSh.lineTo(x+d1x+d2x,y+d1y+d2y); ctSh.lineTo(x+d2x,y+d2y); ctSh.stroke();
+    });
+  }
+  ctSh.fillStyle=col; ctSh.font='bold 14px sans-serif'; ctSh.fillText(title, w-155, 22);
+  document.getElementById('shapeInfo').innerHTML = info;
+}
+showShape('rect');
+
+// ─── 8. AREA GRID ────────────────────────────────────────────
+const gridEl = document.getElementById('areaGrid');
+const gridState = new Array(100).fill(false);
+for (let i=0;i<100;i++) {
+  const c=document.createElement('div'); c.className='gc'; c.dataset.i=i;
+  c.addEventListener('click', function(){
+    const idx=+this.dataset.i; gridState[idx]=!gridState[idx];
+    this.classList.toggle('on', gridState[idx]);
+    document.getElementById('areaCount').textContent =
+      'Ausgefüllte Felder: '+gridState.filter(Boolean).length+' cm² (wenn 1 Feld = 1 cm²)';
+  });
+  gridEl.appendChild(c);
+}
+function clearGrid() {
+  gridState.fill(false);
+  document.querySelectorAll('.gc').forEach(c=>c.classList.remove('on'));
+  document.getElementById('areaCount').textContent='Ausgefüllte Felder: 0 cm²';
+}
+
+// ─── 9. CONVERTER ────────────────────────────────────────────
+const unitNames = ['km²','ha','a','m²','dm²','cm²','mm²'];
+const toM2 = [1e6, 1e4, 100, 1, 0.01, 1e-4, 1e-6];
+function doConv() {
+  const v=parseFloat(document.getElementById('convIn').value);
+  const f=+document.getElementById('convFrom').value;
+  const t=+document.getElementById('convTo').value;
+  if (isNaN(v)) { document.getElementById('convResult').textContent='— Zahl eingeben —'; return; }
+  const res = v * toM2[f] / toM2[t];
+  const s = res.toPrecision(6).replace(/\.?0+$/,'');
+  document.getElementById('convResult').textContent = `${v} ${unitNames[f]} = ${s} ${unitNames[t]}`;
+}
+
+// ─── 9. UMRECHNUNGS-CANVAS ───────────────────────────────────
+const cvUmr = document.getElementById('cvUmrechnung');
+const ctUmr = cvUmr.getContext('2d');
+(function() {
+  const w=cvUmr.width, h=cvUmr.height;
+  bg(ctUmr, cvUmr);
+  const uns=['km²','ha','a','m²','dm²','cm²','mm²'];
+  const cols=['#1e40af','#7c3aed','#059669','#d97706','#dc2626','#0891b2','#475569'];
+  const xs=[20,105,185,268,350,430,508];
+  const by=60;
+  uns.forEach((u,i)=>{
+    ctUmr.fillStyle=cols[i]; ctUmr.fillRect(xs[i],by-22,68,28);
+    ctUmr.fillStyle='#fff'; ctUmr.font='bold 12px sans-serif'; ctUmr.fillText(u,xs[i]+5,by-3);
+  });
+  for (let i=0;i<6;i++) {
+    const x1=xs[i]+68, x2=xs[i+1];
+    // →×100
+    ctUmr.strokeStyle='#dc2626'; ctUmr.lineWidth=1.5;
+    ctUmr.beginPath(); ctUmr.moveTo(x1,by-8); ctUmr.lineTo(x2,by-8); ctUmr.stroke();
+    ctUmr.fillStyle='#dc2626';
+    ctUmr.beginPath(); ctUmr.moveTo(x2,by-8); ctUmr.lineTo(x2-7,by-13); ctUmr.lineTo(x2-7,by-3); ctUmr.fill();
+    ctUmr.font='9px sans-serif'; ctUmr.fillText('×100',(x1+x2)/2-12,by-12);
+    // ←÷100
+    ctUmr.strokeStyle='#2563eb'; ctUmr.lineWidth=1.5;
+    ctUmr.beginPath(); ctUmr.moveTo(x2,by+8); ctUmr.lineTo(x1,by+8); ctUmr.stroke();
+    ctUmr.fillStyle='#2563eb';
+    ctUmr.beginPath(); ctUmr.moveTo(x1,by+8); ctUmr.lineTo(x1+7,by+3); ctUmr.lineTo(x1+7,by+13); ctUmr.fill();
+    ctUmr.font='9px sans-serif'; ctUmr.fillText('÷100',(x1+x2)/2-12,by+20);
+  }
+  ctUmr.fillStyle='#dc2626'; ctUmr.font='12px sans-serif';
+  ctUmr.fillText('→ ×100  (eine Stufe kleiner → mehr Einheiten)',15,120);
+  ctUmr.fillStyle='#2563eb';
+  ctUmr.fillText('← ÷100  (eine Stufe größer → weniger Einheiten)',15,142);
+  ctUmr.fillStyle='#475569'; ctUmr.font='11px sans-serif';
+  ctUmr.fillText('Zwei Stufen: ×10 000 / ÷10 000  |  Drei Stufen: ×1 000 000 / ÷1 000 000',15,165);
+})();
+
+// ─── 10. RECHTECK ────────────────────────────────────────────
+const cvRect = document.getElementById('cvRect');
+const ctRect = cvRect.getContext('2d');
+function updateRect() {
+  const a=+document.getElementById('slA').value;
+  const b=+document.getElementById('slB').value;
+  document.getElementById('lblA').textContent=a;
+  document.getElementById('lblB').textContent=b;
+  const w=cvRect.width, h=cvRect.height;
+  bg(ctRect, cvRect);
+  const maxW=400, maxH=220;
+  const sc=Math.min(maxW/a, maxH/b);
+  const rw=a*sc, rh=b*sc, rx=(w-rw)/2, ry=(h-rh)/2;
+  // Grid inside
+  ctRect.strokeStyle='#bfdbfe'; ctRect.lineWidth=0.5;
+  for(let i=1;i<a;i++){const x=rx+i*sc; ctRect.beginPath(); ctRect.moveTo(x,ry); ctRect.lineTo(x,ry+rh); ctRect.stroke();}
+  for(let j=1;j<b;j++){const y=ry+j*sc; ctRect.beginPath(); ctRect.moveTo(rx,y); ctRect.lineTo(rx+rw,y); ctRect.stroke();}
+  // Rectangle
+  ctRect.fillStyle='#eff6ff'; ctRect.fillRect(rx,ry,rw,rh);
+  ctRect.strokeStyle='#2563eb'; ctRect.lineWidth=3; ctRect.strokeRect(rx,ry,rw,rh);
+  // Labels
+  ctRect.fillStyle='#1e293b'; ctRect.font='bold 13px sans-serif';
+  ctRect.fillText(`a = ${a} cm`,rx+rw/2-30,ry+rh+20);
+  ctRect.save(); ctRect.translate(rx-22,ry+rh/2); ctRect.rotate(-Math.PI/2);
+  ctRect.fillText(`b = ${b} cm`,-30,0); ctRect.restore();
+  const A=a*b, U=2*(a+b);
+  ctRect.fillStyle='#2563eb'; ctRect.font='bold 14px sans-serif';
+  ctRect.fillText(`A = ${a}·${b} = ${A} cm²`,rx+rw/2-50,ry+rh/2+8);
+  document.getElementById('rectResult').innerHTML=
+    `<span style="color:var(--blue)">A = ${a} · ${b} = <strong>${A} cm²</strong></span> &nbsp;|&nbsp;
+     <span style="color:var(--purple)">U = 2·(${a}+${b}) = <strong>${U} cm</strong></span>`;
+}
+document.getElementById('slA').addEventListener('input', updateRect);
+document.getElementById('slB').addEventListener('input', updateRect);
+updateRect();
+
+// ─── 12. COMPOSITE ───────────────────────────────────────────
+const cvComp = document.getElementById('cvComposite');
+const ctComp = cvComp.getContext('2d');
+function showComposite(mode) {
+  const w=cvComp.width, h=cvComp.height;
+  bg(ctComp, cvComp);
+  const sc=28, ox=50, oy=30;
+  const ow=8*sc, oh=6*sc, cw=3*sc, ch=4*sc;
+  if (mode==='add') {
+    // Rect 1: 5×6
+    ctComp.fillStyle='#bfdbfe'; ctComp.fillRect(ox,oy,5*sc,oh);
+    ctComp.strokeStyle='#2563eb'; ctComp.lineWidth=2; ctComp.strokeRect(ox,oy,5*sc,oh);
+    ctComp.fillStyle='#2563eb'; ctComp.font='bold 12px sans-serif';
+    ctComp.fillText('A₁=5×6=30 cm²',ox+5,oy+oh/2+5);
+    // Rect 2: 3×2
+    ctComp.fillStyle='#bbf7d0'; ctComp.fillRect(ox+5*sc,oy+ch,(ow-5*sc),(oh-ch));
+    ctComp.strokeStyle='#16a34a'; ctComp.lineWidth=2; ctComp.strokeRect(ox+5*sc,oy+ch,(ow-5*sc),(oh-ch));
+    ctComp.fillStyle='#16a34a'; ctComp.font='bold 11px sans-serif';
+    ctComp.fillText('A₂=3×2=6',ox+5*sc+3,oy+ch+(oh-ch)/2);
+    // Dims
+    ctComp.fillStyle='#64748b'; ctComp.font='11px sans-serif';
+    ctComp.fillText('5',ox+2.5*sc-4,oy+oh+14);
+    ctComp.fillText('3',ox+5*sc+1.5*sc-5,oy+oh+14);
+    ctComp.fillText('6',ox-16,oy+oh/2+4);
+    ctComp.fillText('2',ox+ow+6,oy+ch+(oh-ch)/2+4);
+    ctComp.fillStyle='#1e293b'; ctComp.font='bold 13px sans-serif';
+    ctComp.fillText('A = A₁ + A₂ = 30 + 6 = 36 cm²',ox,oy+oh+36);
+    document.getElementById('compositeInfo').innerHTML =
+      '<strong>Zerlegung (Additiv):</strong><br>A₁ = 5×6 = 30 cm² &nbsp;+&nbsp; A₂ = 3×2 = 6 cm²<br><strong>A = 30 + 6 = 36 cm²</strong>';
+  } else {
+    ctComp.fillStyle='#fef9c3'; ctComp.fillRect(ox,oy,ow,oh);
+    ctComp.strokeStyle='#d97706'; ctComp.lineWidth=2; ctComp.strokeRect(ox,oy,ow,oh);
+    ctComp.fillStyle='#d97706'; ctComp.font='bold 12px sans-serif';
+    ctComp.fillText('8×6 = 48 cm²',ox+8,oy+oh/2+5);
+    ctComp.fillStyle='#fee2e2'; ctComp.fillRect(ox+5*sc,oy,cw,ch);
+    ctComp.strokeStyle='#dc2626'; ctComp.lineWidth=2; ctComp.setLineDash([5,3]);
+    ctComp.strokeRect(ox+5*sc,oy,cw,ch); ctComp.setLineDash([]);
+    ctComp.fillStyle='#dc2626'; ctComp.font='bold 11px sans-serif';
+    ctComp.fillText('3×4=12',ox+5*sc+3,oy+ch/2+4);
+    ctComp.fillText('(−)',ox+5*sc+11,oy+ch/2+18);
+    ctComp.fillStyle='#64748b'; ctComp.font='11px sans-serif';
+    ctComp.fillText('8',ox+ow/2-5,oy+oh+14);
+    ctComp.fillText('6',ox-16,oy+oh/2+4);
+    ctComp.fillStyle='#1e293b'; ctComp.font='bold 13px sans-serif';
+    ctComp.fillText('A = 48 − 12 = 36 cm²',ox,oy+oh+36);
+    document.getElementById('compositeInfo').innerHTML =
+      '<strong>Ergänzung (Subtraktiv):</strong><br>A_groß = 8×6 = 48 cm² &nbsp;−&nbsp; A_abzug = 3×4 = 12 cm²<br><strong>A = 48 − 12 = 36 cm²</strong>';
+  }
+}
+showComposite('add');
+
+// ─── AUFGABE CANVAS ──────────────────────────────────────────
+(function() {
+  const cv=document.getElementById('cvAufgabe'), ctx=cv.getContext('2d');
+  bg(ctx, cv);
+  const sc=17, ox=30, oy=15;
+  // L-Form: Außen 10×8, ausgeschnitten oben rechts 4×5
+  const pts=[[ox,oy],[ox+10*sc,oy],[ox+10*sc,oy+5*sc],[ox+6*sc,oy+5*sc],[ox+6*sc,oy+8*sc],[ox,oy+8*sc]];
+  ctx.fillStyle='#eff6ff'; ctx.beginPath();
+  ctx.moveTo(pts[0][0],pts[0][1]); pts.forEach(([x,y])=>ctx.lineTo(x,y));
+  ctx.closePath(); ctx.fill();
+  ctx.strokeStyle='#2563eb'; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.moveTo(pts[0][0],pts[0][1]); pts.forEach(([x,y])=>ctx.lineTo(x,y));
+  ctx.closePath(); ctx.stroke();
+  ctx.fillStyle='#1e293b'; ctx.font='11px sans-serif';
+  ctx.fillText('10 cm',ox+3*sc,oy-6);
+  ctx.fillText('8 cm',ox-22,oy+4*sc);
+  ctx.fillText('4 cm',ox+8*sc,oy+2.5*sc);
+  ctx.fillText('6 cm',ox+2*sc,oy+8*sc+13);
+  ctx.fillText('5 cm',ox+10*sc+4,oy+2.5*sc);
+  ctx.fillText('3 cm',ox+6*sc+4,oy+6.5*sc);
+  ctx.fillStyle='#dc2626'; ctx.font='italic 11px sans-serif';
+  ctx.fillText('A = ?',ox+2*sc,oy+4*sc+8);
+})();
+
+// ─── SOLUTIONS TOGGLE ────────────────────────────────────────
+function toggleSol() {
+  const el=document.getElementById('solutions');
+  const btn=document.getElementById('solBtn');
+  if (el.style.display==='none') { el.style.display='block'; btn.textContent='Lösungshinweise verbergen'; }
+  else { el.style.display='none'; btn.textContent='Lösungshinweise anzeigen'; }
+}
+
+// ─── QUIZ ────────────────────────────────────────────────────
+const qdata = [
+  { q:'Welche Koordinaten hat ein Punkt, der 4 Einheiten nach links und 3 Einheiten nach oben liegt?',
+    opts:['(4|3)','(−4|3)','(4|−3)','(−4|−3)'], ok:1,
+    ex:'Links = negative x-Koordinate → −4; oben = positive y-Koordinate → +3. Also P(−4|3).' },
+  { q:'Wie viele Diagonalen hat ein Sechseck?',
+    opts:['6','8','9','12'], ok:2,
+    ex:'Formel: n·(n−3)/2 = 6·3/2 = 9. Die roten Striche im Sechseck-Bild bestätigen das.' },
+  { q:'Rechteck a = 12 cm, b = 5 cm. Wie groß ist der Umfang U?',
+    opts:['60 cm','34 cm','17 cm','24 cm'], ok:1,
+    ex:'U = 2·(a+b) = 2·(12+5) = 2·17 = 34 cm.' },
+  { q:'Welche Aussage über parallele Geraden ist FALSCH?',
+    opts:['Sie haben überall den gleichen Abstand.','Sie schneiden sich nie.','Sie stehen senkrecht aufeinander.','Sie verlaufen in dieselbe Richtung.'], ok:2,
+    ex:'Senkrecht aufeinander = orthogonal (⊥), nicht parallel (∥). Das ist der klassische Verwechslungs-Fehler!' },
+  { q:'Wie viele cm² sind 2,5 m²?',
+    opts:['250 cm²','2 500 cm²','25 000 cm²','250 000 cm²'], ok:2,
+    ex:'2,5 m² ×100 = 250 dm² ×100 = 25 000 cm²  (zwei Stufen, also ×10 000 insgesamt).' },
+  { q:'Welches Viereck hat alle Seiten gleich lang UND alle Winkel 90°?',
+    opts:['Raute','Rechteck','Parallelogramm','Quadrat'], ok:3,
+    ex:'Das Quadrat ist gleichzeitig Raute (alle Seiten gleich) und Rechteck (alle Winkel 90°).' },
+  { q:'Von einem 6×8 cm Rechteck wird eine 2×3 cm Ecke abgezogen. Wie groß ist die Restfläche?',
+    opts:['48 cm²','42 cm²','44 cm²','46 cm²'], ok:1,
+    ex:'A = 6·8 − 2·3 = 48 − 6 = 42 cm² (Subtraktionsmethode).' },
+  { q:'1 ha entspricht wie vielen Quadratmetern?',
+    opts:['100 m²','1 000 m²','10 000 m²','100 000 m²'], ok:2,
+    ex:'1 ha = 100 a, 1 a = 100 m² → 1 ha = 10 000 m². (Fußballfeld ≈ 1 ha!)' },
+  { q:'Welche Figur hat Diagonalen, die gleich lang UND senkrecht aufeinander stehen?',
+    opts:['Parallelogramm','Trapez','Quadrat','Raute'], ok:2,
+    ex:'Beim Quadrat sind die Diagonalen gleich lang (wie Rechteck) und stehen ⊥ aufeinander (wie Raute).' },
+  { q:'Ein Quadrat hat Flächeninhalt 64 cm². Wie lang ist eine Seite?',
+    opts:['6 cm','8 cm','16 cm','32 cm'], ok:1,
+    ex:'A = a² → a = √64 = 8 cm. Probe: 8·8 = 64 ✓' },
+  { q:'Der Abstand eines Punktes P von einer Geraden g ist …',
+    opts:['… die längste Verbindungsstrecke von P zu g.','… die Länge des Lots von P auf g (kürzeste Strecke).','… der Mittelwert aller Abstände.','… immer 0.'], ok:1,
+    ex:'Der Abstand ist stets die KÜRZESTE Verbindung — das Lot (senkrechte Strecke) von P auf g.' },
+  { q:'Wie rechnet man 3,7 dm² in cm² um?',
+    opts:['×10 = 37 cm²','×100 = 370 cm²','÷100 = 0,037 cm²','×1 000 = 3 700 cm²'], ok:1,
+    ex:'1 dm² = 100 cm² → 3,7 · 100 = 370 cm². (Eine Stufe kleiner = mal 100!)' }
+];
+
+function buildQuiz() {
+  const box=document.getElementById('quizBox'); box.innerHTML='';
+  qdata.forEach((item,qi) => {
+    const div=document.createElement('div'); div.className='qz-q';
+    div.innerHTML=`<div class="qt">${qi+1}. ${item.q}</div>` +
+      item.opts.map((o,oi)=>
+        `<label class="qz-opt" id="o_${qi}_${oi}"><input type="radio" name="q${qi}" value="${oi}"> ${o}</label>`
+      ).join('') +
+      `<div class="qz-fb" id="fb_${qi}"></div>`;
+    box.appendChild(div);
+  });
+}
+function evalQuiz() {
+  let score=0;
+  qdata.forEach((item,qi) => {
+    const sel=document.querySelector(`input[name="q${qi}"]:checked`);
+    const fb=document.getElementById(`fb_${qi}`);
+    item.opts.forEach((_,oi)=>{
+      document.getElementById(`o_${qi}_${oi}`).classList.remove('correct','wrong');
+    });
+    document.getElementById(`o_${qi}_${item.ok}`).classList.add('correct');
+    if (sel) {
+      const v=+sel.value;
+      if (v===item.ok) { score++; fb.style.color='#16a34a'; fb.textContent='✓ Richtig! '+item.ex; }
+      else { document.getElementById(`o_${qi}_${v}`).classList.add('wrong'); fb.style.color='#dc2626'; fb.textContent='✗ Leider falsch. '+item.ex; }
+    } else { fb.style.color='#d97706'; fb.textContent='⚠ Nicht beantwortet. '+item.ex; }
+    fb.style.display='block';
+  });
+  const pct=Math.round(score/qdata.length*100);
+  let g,c,m;
+  if(pct>=92){g='1 – Sehr gut';  c='#16a34a'; m='Hervorragend! Du bist bestens vorbereitet.';}
+  else if(pct>=75){g='2 – Gut';   c='#2563eb'; m='Sehr gut! Kleine Details noch wiederholen.';}
+  else if(pct>=58){g='3 – Befriedigend'; c='#7c3aed'; m='Gut! Schau die rot markierten Themen nochmal an.';}
+  else if(pct>=42){g='4 – Ausreichend'; c='#d97706'; m='Übe mehr — besonders die Einheiten und Formeln.';}
+  else {g='5 – Nicht bestanden'; c='#dc2626'; m='Lies die Zusammenfassung nochmal durch und übe täglich!';}
+  document.getElementById('quizResult').innerHTML =
+    `<div class="qz-result" style="border:3px solid ${c}">
+       <h3 style="color:${c}">${score} / ${qdata.length} Punkte</h3>
+       <p style="font-size:1.2rem;">Ergebnis: ${pct}% → Note: <strong>${g}</strong></p>
+       <p style="margin-top:8px; opacity:0.9">${m}</p>
+     </div>`;
+  document.getElementById('quizResult').scrollIntoView({behavior:'smooth',block:'center'});
+}
+function resetQuiz() { buildQuiz(); document.getElementById('quizResult').innerHTML=''; }
+buildQuiz();
+</script>
+</body>
+</html>
