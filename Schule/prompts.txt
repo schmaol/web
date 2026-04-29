@@ -23,3 +23,19 @@ Erstelle am Ende noch ein interaktives Wissensquiz (10 bis 12 multiple choice Fr
 und suche einige passende Übungsaufgaben aus den Buchseiten zusammen.
 
 Fasse am Ende alles in eine interaktive klickbare html Datei zusammen!
+
+
+
+ich bin Schüler 5. Klasse Gymnasium und bereite mich auf eine Klassenarbeit im Fach Englisch als erste Fremdsprache vor.
+Im pdf Anhang der Lernplan.
+Ignoriere die Angaben zu Vokabeln, Buchseiten und Zeitplanung.
+Konzentriere dich auf die Grammatikthemen, Monate und Ordnungszahlen.
+Erstelle hierzu eine Übersicht aller Themen und erkläre und erläutere diese verständlich.
+Was gibt es zu beachten, was sind die Regeln, gibt es Ausnahmen oder Sonderfälle?
+Nutze hierzu Beispiele.
+Erstelle im Anschluss ein Wissensquiz (multiple choice) das alle Themen abdeckt mit insgesamt 12 Fragen.
+Die Fragen sollen aber bei jedem erneutem Test variieren.
+
+Das Ganze Format soll als interaktive klickbare html Seite gestaltet werden.
+
+Zum Schluß erstelle noch ein Arbeitsblatt zum Ausdrucken mit einigen Übungsaufgaben.

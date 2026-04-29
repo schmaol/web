@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Englisch Klasse 5 – Klassenarbeit Vorbereitung</title>
+<style>
+:root {
+  --blue: #2563eb; --blue-light: #dbeafe;
+  --purple: #7c3aed; --purple-light: #ede9fe;
+  --green: #16a34a; --green-light: #dcfce7;
+  --red: #dc2626; --red-light: #fee2e2;
+  --orange: #d97706; --orange-light: #fef3c7;
+  --teal: #0891b2; --teal-light: #cffafe;
+  --bg: #f1f5f9; --card: #ffffff;
+  --text: #1e293b; --muted: #64748b; --border: #e2e8f0;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; }
+
+/* HEADER */
+.header { background: linear-gradient(135deg, var(--blue) 0%, var(--purple) 100%); color: white; padding: 28px 24px 22px; text-align: center; }
+.header h1 { font-size: 1.9rem; margin-bottom: 6px; }
+.header p { opacity: .85; font-size: .95rem; }
+
+/* NAV */
+.nav { background: #1e3a5f; display: flex; flex-wrap: wrap; padding: 0 16px; }
+.nav-btn { padding: 13px 20px; background: transparent; border: none; color: rgba(255,255,255,.65); cursor: pointer; font-size: 14px; font-weight: 600; border-bottom: 3px solid transparent; transition: all .2s; letter-spacing: .3px; }
+.nav-btn:hover { color: white; background: rgba(255,255,255,.08); }
+.nav-btn.active { color: white; border-bottom-color: #60a5fa; }
+
+/* SECTIONS */
+.section { display: none; }
+.section.active { display: block; }
+.content { max-width: 920px; margin: 0 auto; padding: 28px 20px 48px; }
+
+/* CARD */
+.card { background: var(--card); border-radius: 12px; border: 1px solid var(--border); padding: 24px; margin-bottom: 22px; box-shadow: 0 2px 10px rgba(0,0,0,.06); }
+.card-title { font-size: 1.25rem; font-weight: 700; color: var(--blue); margin-bottom: 4px; display: flex; align-items: center; gap: 10px; }
+.card-subtitle { font-size: .9rem; color: var(--muted); margin-bottom: 14px; }
+.section-head { font-size: 1.02rem; font-weight: 700; color: var(--purple); margin: 18px 0 8px; }
+
+/* TAGS */
+.tag { display: inline-block; font-size: .72rem; font-weight: 700; padding: 2px 9px; border-radius: 20px; margin-bottom: 12px; }
+.tag-blue { background: var(--blue-light); color: var(--blue); }
+.tag-purple { background: var(--purple-light); color: var(--purple); }
+.tag-teal { background: var(--teal-light); color: var(--teal); }
+.tag-orange { background: var(--orange-light); color: var(--orange); }
+.tag-green { background: var(--green-light); color: var(--green); }
+
+/* RULE BOXES */
+.rule { border-left: 4px solid var(--blue); background: var(--blue-light); border-radius: 0 8px 8px 0; padding: 12px 16px; margin: 12px 0; font-size: .93rem; }
+.rule.warn { border-color: var(--orange); background: var(--orange-light); }
+.rule.good { border-color: var(--green); background: var(--green-light); }
+.rule.purple { border-color: var(--purple); background: var(--purple-light); }
+
+/* TABLE */
+table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: .91rem; }
+th { background: var(--blue); color: white; padding: 9px 13px; text-align: left; }
+td { padding: 8px 13px; border-bottom: 1px solid var(--border); }
+tr:nth-child(even) td { background: #f8fafc; }
+tr:last-child td { border-bottom: none; }
+
+/* EXAMPLES */
+.ex { background: #f1f5f9; border-radius: 8px; padding: 10px 15px; margin: 8px 0; font-size: .91rem; }
+.ex .en { font-weight: 600; color: var(--blue); }
+.ex .de { color: var(--muted); font-style: italic; font-size: .88rem; }
+
+/* QUIZ */
+.qcard { background: white; border-radius: 12px; border: 1px solid var(--border); padding: 22px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,.05); }
+.qnum { font-size: .75rem; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; margin-bottom: 8px; }
+.qtext { font-size: 1.02rem; font-weight: 500; margin-bottom: 14px; }
+.options { display: flex; flex-direction: column; gap: 8px; }
+.opt { padding: 11px 15px; border: 2px solid var(--border); border-radius: 8px; cursor: pointer; font-size: .93rem; text-align: left; background: white; display: flex; align-items: center; gap: 11px; transition: all .15s; }
+.opt:hover:not([disabled]) { border-color: var(--blue); background: var(--blue-light); }
+.opt.correct { border-color: var(--green); background: var(--green-light); color: var(--green); font-weight: 600; }
+.opt.wrong { border-color: var(--red); background: var(--red-light); color: var(--red); font-weight: 600; }
+.opt[disabled] { cursor: default; }
+.opt-ltr { display: inline-flex; align-items: center; justify-content: center; width: 25px; height: 25px; border-radius: 50%; background: var(--border); font-size: .78rem; font-weight: 700; flex-shrink: 0; }
+.opt.correct .opt-ltr { background: var(--green); color: white; }
+.opt.wrong .opt-ltr { background: var(--red); color: white; }
+.fb { margin-top: 10px; padding: 9px 13px; border-radius: 8px; font-size: .88rem; display: none; }
+.fb.show { display: block; }
+.fb.correct { background: var(--green-light); color: var(--green); }
+.fb.wrong { background: var(--red-light); color: var(--red); }
+
+/* PROGRESS */
+.prog-wrap { background: var(--border); border-radius: 10px; height: 7px; margin-bottom: 22px; overflow: hidden; }
+.prog-bar { height: 100%; background: linear-gradient(to right, var(--blue), var(--purple)); border-radius: 10px; transition: width .3s; }
+
+/* SCORE */
+.score-box { text-align: center; padding: 36px 20px; }
+.score-big { font-size: 4.5rem; font-weight: 800; line-height: 1; }
+.score-lbl { font-size: 1rem; color: var(--muted); margin-top: 6px; }
+.score-grade { font-size: 1.35rem; font-weight: 700; margin-top: 14px; }
+
+/* BUTTONS */
+.btn { padding: 11px 22px; border-radius: 8px; border: none; cursor: pointer; font-size: .95rem; font-weight: 700; transition: all .2s; display: inline-block; }
+.btn-blue { background: var(--blue); color: white; }
+.btn-blue:hover { background: #1d4ed8; }
+.btn-purple { background: var(--purple); color: white; }
+.btn-purple:hover { background: #6d28d9; }
+.btn-outline { background: transparent; border: 2px solid var(--blue); color: var(--blue); }
+.btn-outline:hover { background: var(--blue-light); }
+
+/* QUIZ HEADER BAR */
+.quiz-topbar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
+
+/* WORKSHEET */
+.ws-title { font-weight: 700; font-size: 1rem; margin-bottom: 10px; }
+.ws-task { margin-bottom: 26px; }
+.ws-line { font-size: .94rem; margin-bottom: 11px; }
+.ws-gap { display: inline-block; border-bottom: 2px solid #555; min-width: 100px; height: 20px; vertical-align: bottom; }
+.ws-long-gap { display: inline-block; border-bottom: 2px solid #555; min-width: 260px; height: 20px; vertical-align: bottom; }
+.ws-badge { display: inline-block; background: var(--purple); color: white; font-size: .72rem; padding: 2px 9px; border-radius: 12px; margin-left: 8px; font-weight: 700; vertical-align: middle; }
+
+/* SOLUTION TOGGLE */
+.sol-btn { background: none; border: 1px dashed var(--muted); color: var(--muted); padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: .83rem; margin-top: 6px; }
+.sol-btn:hover { background: #f8fafc; }
+.sol-content { display: none; background: var(--green-light); border-radius: 8px; padding: 12px 15px; margin-top: 8px; font-size: .88rem; color: var(--green); }
+.sol-content.open { display: block; }
+
+/* PRINT */
+@media print {
+  .no-print, .header, .nav, .sol-btn { display: none !important; }
+  #grammar-sec, #quiz-sec { display: none !important; }
+  #worksheet-sec { display: block !important; }
+  .card { box-shadow: none !important; border: 1px solid #bbb !important; break-inside: avoid; }
+  body { background: white; }
+  .ws-print-header { display: block !important; }
+  .content { padding: 10px; }
+  .btn-purple { display: none; }
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .header h1 { font-size: 1.4rem; }
+  .content { padding: 16px 12px 40px; }
+  .nav-btn { padding: 10px 12px; font-size: 13px; }
+  .card { padding: 16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🇬🇧 Englisch – 3. Klassenarbeit</h1>
+  <p>Klasse 5a &nbsp;·&nbsp; Grammatik, Monate &amp; Ordnungszahlen &nbsp;·&nbsp; Lernhilfe</p>
+</div>
+
+<div class="nav">
+  <button class="nav-btn active" onclick="showSection('grammar',this)">📚 Grammatik-Übersicht</button>
+  <button class="nav-btn" onclick="showSection('quiz',this)">🧠 Quiz (12 Fragen)</button>
+  <button class="nav-btn" onclick="showSection('worksheet',this)">📝 Arbeitsblatt</button>
+</div>
+
+<div class="content">
+
+<!-- ═══════════════ GRAMMAR ═══════════════ -->
+<div class="section active" id="grammar-sec">
+
+  <!-- G11a -->
+  <div class="card">
+    <span class="tag tag-blue">G11a</span>
+    <div class="card-title">Simple Present: Fragen &amp; Kurzantworten</div>
+    <div class="card-subtitle">Questions &amp; Short Answers</div>
+    <p>Im Simple Present bildet man Fragen <strong>nicht</strong> durch Umstellen des Verbs (wie im Deutschen), sondern mit einem <strong>Hilfsverb</strong>: <em>do</em> oder <em>does</em>.</p>
+
+    <div class="section-head">Aufbau der Frage</div>
+    <div class="rule">
+      <strong>Do / Does &nbsp;+&nbsp; Subjekt &nbsp;+&nbsp; Verb (Grundform) &nbsp;+&nbsp; … ?</strong>
+    </div>
+    <table>
+      <tr><th>Subjekt</th><th>Hilfsverb</th><th>Beispiel</th></tr>
+      <tr><td>I &nbsp;/&nbsp; you &nbsp;/&nbsp; we &nbsp;/&nbsp; they</td><td><strong>do</strong></td><td>Do you like music?</td></tr>
+      <tr><td>he &nbsp;/&nbsp; she &nbsp;/&nbsp; it</td><td><strong>does</strong></td><td>Does she play tennis?</td></tr>
+    </table>
+    <div class="rule warn">
+      ⚠️ <strong>Achtung:</strong> Nach <em>does</em> bekommt das Verb <strong>kein –s</strong>!<br>
+      ❌ Does she <u>likes</u> cats? &nbsp;&nbsp;&nbsp; ✅ Does she <u>like</u> cats?
+    </div>
+
+    <div class="section-head">Kurzantworten (Short Answers)</div>
+    <p>Im Englischen antwortet man nie nur mit „Yes" oder „No" – man wiederholt das Hilfsverb:</p>
+    <table>
+      <tr><th>Frage</th><th>✅ Ja</th><th>❌ Nein</th></tr>
+      <tr><td>Do you / we / they …?</td><td>Yes, I/we/they <strong>do</strong>.</td><td>No, I/we/they <strong>don't</strong>.</td></tr>
+      <tr><td>Does he / she / it …?</td><td>Yes, he/she/it <strong>does</strong>.</td><td>No, he/she/it <strong>doesn't</strong>.</td></tr>
+    </table>
+    <div class="ex"><div class="en">– Do you have a pet? &nbsp; – Yes, I do. / No, I don't.</div><div class="de">– Hast du ein Haustier? – Ja. / Nein.</div></div>
+    <div class="ex"><div class="en">– Does Tom speak Spanish? &nbsp; – Yes, he does. / No, he doesn't.</div><div class="de">– Spricht Tom Spanisch? – Ja. / Nein.</div></div>
+    <div class="ex"><div class="en">– Do they live in Berlin? &nbsp; – No, they don't.</div><div class="de">– Wohnen sie in Berlin? – Nein.</div></div>
+  </div>
+
+  <!-- G11b -->
+  <div class="card">
+    <span class="tag tag-purple">G11b</span>
+    <div class="card-title">Simple Present: Verneinungen mit don't / doesn't</div>
+    <div class="card-subtitle">Negative Sentences</div>
+    <p>Negative Sätze im Simple Present werden mit <strong>don't</strong> (= do not) oder <strong>doesn't</strong> (= does not) gebildet.</p>
+
+    <div class="section-head">Aufbau der Verneinung</div>
+    <div class="rule" style="border-color: var(--purple); background: var(--purple-light);">
+      <strong>Subjekt &nbsp;+&nbsp; don't / doesn't &nbsp;+&nbsp; Verb (Grundform) &nbsp;+&nbsp; …</strong>
+    </div>
+    <table>
+      <tr><th>Subjekt</th><th>Verneinung</th><th>Beispiel</th></tr>
+      <tr><td>I &nbsp;/&nbsp; you &nbsp;/&nbsp; we &nbsp;/&nbsp; they</td><td><strong>don't</strong></td><td>I don't like onions.</td></tr>
+      <tr><td>he &nbsp;/&nbsp; she &nbsp;/&nbsp; it</td><td><strong>doesn't</strong></td><td>She doesn't eat meat.</td></tr>
+    </table>
+    <div class="rule warn">
+      ⚠️ <strong>Goldene Regel:</strong> Nach <em>doesn't</em> steht das Verb immer in der <strong>Grundform – kein –s!</strong><br>
+      ❌ He doesn't <u>plays</u> football. &nbsp;&nbsp;&nbsp; ✅ He doesn't <u>play</u> football.
+    </div>
+    <div class="ex"><div class="en">We don't watch TV every day.</div><div class="de">Wir sehen nicht jeden Tag fern.</div></div>
+    <div class="ex"><div class="en">My sister doesn't speak French.</div><div class="de">Meine Schwester spricht kein Französisch.</div></div>
+    <div class="ex"><div class="en">It doesn't rain here in summer.</div><div class="de">Hier regnet es im Sommer nicht.</div></div>
+  </div>
+
+  <!-- G11c -->
+  <div class="card">
+    <span class="tag tag-teal">G11c</span>
+    <div class="card-title">Simple Present: W-Fragen mit Fragewörtern</div>
+    <div class="card-subtitle">Questions with Question Words</div>
+    <p>Mit einem <strong>Fragewort (W-Wort)</strong> fragt man nach einer bestimmten Information – nicht nur nach Ja oder Nein.</p>
+
+    <div class="section-head">Die wichtigsten Fragewörter</div>
+    <table>
+      <tr><th>Englisch</th><th>Deutsch</th><th>Fragt nach …</th></tr>
+      <tr><td><strong>What</strong></td><td>Was</td><td>Dingen, Aktivitäten</td></tr>
+      <tr><td><strong>Where</strong></td><td>Wo / Wohin / Woher</td><td>Ort</td></tr>
+      <tr><td><strong>When</strong></td><td>Wann</td><td>Zeit</td></tr>
+      <tr><td><strong>Who</strong></td><td>Wer / Wen</td><td>Personen</td></tr>
+      <tr><td><strong>Why</strong></td><td>Warum</td><td>Grund</td></tr>
+      <tr><td><strong>How</strong></td><td>Wie</td><td>Art &amp; Weise</td></tr>
+      <tr><td><strong>How many</strong></td><td>Wie viele</td><td>Anzahl (zählbar)</td></tr>
+      <tr><td><strong>How much</strong></td><td>Wie viel</td><td>Menge (nicht zählbar)</td></tr>
+    </table>
+
+    <div class="section-head">Aufbau der W-Frage</div>
+    <div class="rule" style="border-color: var(--teal); background: var(--teal-light);">
+      <strong>Fragewort &nbsp;+&nbsp; do/does &nbsp;+&nbsp; Subjekt &nbsp;+&nbsp; Verb (Grundform) &nbsp;+&nbsp; … ?</strong>
+    </div>
+    <div class="ex"><div class="en">Where do you live? – I live in Munich.</div><div class="de">Wo wohnst du? – Ich wohne in München.</div></div>
+    <div class="ex"><div class="en">What does she eat for breakfast?</div><div class="de">Was isst sie zum Frühstück?</div></div>
+    <div class="ex"><div class="en">When do they go to school?</div><div class="de">Wann gehen sie zur Schule?</div></div>
+    <div class="ex"><div class="en">How many pets does Tom have?</div><div class="de">Wie viele Haustiere hat Tom?</div></div>
+    <div class="rule warn">
+      ⚠️ <strong>Sonderfall – Who als Subjekt:</strong> Wenn <em>who</em> selbst das Subjekt der Frage ist, braucht man <strong>kein do/does</strong>:<br>
+      ✅ <em>Who <strong>lives</strong> there?</em> (= Wer wohnt dort?) &nbsp;→&nbsp; Das Verb bekommt –s (3. Person Singular).
+    </div>
+  </div>
+
+  <!-- G12a -->
+  <div class="card">
+    <span class="tag tag-orange">G12a</span>
+    <div class="card-title">Mengenangaben: some und any</div>
+    <div class="card-subtitle">The Quantifiers: some and any</div>
+    <p><strong>Some</strong> und <strong>any</strong> bedeuten beide „einige / etwas / ein paar". Welches man benutzt, hängt vom Satztyp ab.</p>
+
+    <div class="section-head">Die Grundregel</div>
+    <table>
+      <tr><th>Satztyp</th><th>Wort</th><th>Beispiel</th></tr>
+      <tr><td>✅ Positiver Satz</td><td><strong>some</strong></td><td>There are <strong>some</strong> shops in our town.</td></tr>
+      <tr><td>❌ Verneinung</td><td><strong>any</strong></td><td>There aren't <strong>any</strong> parks here.</td></tr>
+      <tr><td>❓ Frage</td><td><strong>any</strong></td><td>Do you have <strong>any</strong> brothers?</td></tr>
+    </table>
+    <div class="ex"><div class="en">I have some friends in London. ✅</div><div class="de">Ich habe einige Freunde in London.</div></div>
+    <div class="ex"><div class="en">I don't have any friends here. ❌</div><div class="de">Ich habe hier keine Freunde.</div></div>
+    <div class="ex"><div class="en">Are there any restaurants near your school? ❓</div><div class="de">Gibt es Restaurants in der Nähe deiner Schule?</div></div>
+    <div class="rule good">
+      ⭐ <strong>Ausnahme: <em>some</em> in Fragen (Angebote &amp; Bitten)</strong><br>
+      Wenn man etwas <em>anbietet</em> oder <em>um etwas bittet</em>, benutzt man <strong>some</strong> statt <em>any</em> – weil man „Ja" als Antwort erwartet:<br><br>
+      <em>Would you like <strong>some</strong> tea?</em> (Angebot – „Möchtest du etwas Tee?")<br>
+      <em>Can I have <strong>some</strong> water, please?</em> (Bitte – „Kann ich etwas Wasser haben?")
+    </div>
+    <div class="rule">
+      💡 <strong>Eselsbrücke:</strong> &nbsp;
+      <strong>Some</strong> = positiv (ich krieg was!) &nbsp;|&nbsp;
+      <strong>Any</strong> = negativ &amp; Fragen (überhaupt welche?)
+    </div>
+  </div>
+
+  <!-- Dates -->
+  <div class="card">
+    <span class="tag tag-green">Datum</span>
+    <div class="card-title">Monate &amp; Ordnungszahlen – Das Datum auf Englisch</div>
+    <div class="card-subtitle">Months, Ordinal Numbers &amp; Dates</div>
+
+    <div class="section-head">Die 12 Monate</div>
+    <table>
+      <tr><th>#</th><th>Englisch</th><th>Deutsch</th><th>#</th><th>Englisch</th><th>Deutsch</th></tr>
+      <tr><td>1</td><td><strong>January</strong></td><td>Januar</td><td>7</td><td><strong>July</strong></td><td>Juli</td></tr>
+      <tr><td>2</td><td><strong>February</strong></td><td>Februar</td><td>8</td><td><strong>August</strong></td><td>August</td></tr>
+      <tr><td>3</td><td><strong>March</strong></td><td>März</td><td>9</td><td><strong>September</strong></td><td>September</td></tr>
+      <tr><td>4</td><td><strong>April</strong></td><td>April</td><td>10</td><td><strong>October</strong></td><td>Oktober</td></tr>
+      <tr><td>5</td><td><strong>May</strong></td><td>Mai</td><td>11</td><td><strong>November</strong></td><td>November</td></tr>
+      <tr><td>6</td><td><strong>June</strong></td><td>Juni</td><td>12</td><td><strong>December</strong></td><td>Dezember</td></tr>
+    </table>
+
+    <div class="section-head">Ordnungszahlen (Ordinal Numbers)</div>
+    <p>Für das Datum braucht man Ordnungszahlen: 1. → first, 2. → second usw.</p>
+    <div class="rule">
+      <strong>Grundregel:</strong> Zahl + <strong>–th</strong> = Ordnungszahl &nbsp;→ &nbsp;fourth, sixth, seventh …
+    </div>
+    <div class="rule warn">
+      ⚠️ <strong>Ausnahmen – diese 3 sind völlig unregelmäßig:</strong><br>
+      1 → <strong>first</strong> (1st) &nbsp;|&nbsp; 2 → <strong>second</strong> (2nd) &nbsp;|&nbsp; 3 → <strong>third</strong> (3rd)<br><br>
+      <strong>Weitere Sonderfälle bei –th:</strong><br>
+      5 → <strong>fifth</strong> (nicht „fiveth") &nbsp;|&nbsp; 8 → <strong>eighth</strong> (nicht „eightth") &nbsp;|&nbsp;
+      9 → <strong>ninth</strong> (nicht „nineth") &nbsp;|&nbsp; 12 → <strong>twelfth</strong> (nicht „twelveth")<br>
+      20 → <strong>twentieth</strong> (–y wird zu –ie) &nbsp;|&nbsp; 30 → <strong>thirtieth</strong>
+    </div>
+    <table>
+      <tr><th>Zahl</th><th>Ordnungszahl</th><th>Kürzel</th><th>Zahl</th><th>Ordnungszahl</th><th>Kürzel</th></tr>
+      <tr><td>1</td><td>first</td><td>1st</td><td>11</td><td>eleventh</td><td>11th</td></tr>
+      <tr><td>2</td><td>second</td><td>2nd</td><td>12</td><td>twelfth</td><td>12th</td></tr>
+      <tr><td>3</td><td>third</td><td>3rd</td><td>13</td><td>thirteenth</td><td>13th</td></tr>
+      <tr><td>4</td><td>fourth</td><td>4th</td><td>20</td><td>twentieth</td><td>20th</td></tr>
+      <tr><td>5</td><td>fifth</td><td>5th</td><td>21</td><td>twenty-first</td><td>21st</td></tr>
+      <tr><td>6</td><td>sixth</td><td>6th</td><td>22</td><td>twenty-second</td><td>22nd</td></tr>
+      <tr><td>7</td><td>seventh</td><td>7th</td><td>23</td><td>twenty-third</td><td>23rd</td></tr>
+      <tr><td>8</td><td>eighth</td><td>8th</td><td>24</td><td>twenty-fourth</td><td>24th</td></tr>
+      <tr><td>9</td><td>ninth</td><td>9th</td><td>30</td><td>thirtieth</td><td>30th</td></tr>
+      <tr><td>10</td><td>tenth</td><td>10th</td><td>31</td><td>thirty-first</td><td>31st</td></tr>
+    </table>
+
+    <div class="section-head">Das Datum sprechen &amp; schreiben</div>
+    <div class="rule" style="border-color: var(--green); background: var(--green-light);">
+      <strong>Gesprochen:</strong> &nbsp; the [Ordnungszahl] of [Monat]<br>
+      <strong>Geschrieben:</strong> &nbsp; [Ordnungszahl] [Monat] &nbsp;oder&nbsp; [Monat] [Ordnungszahl]
+    </div>
+    <div class="ex"><div class="en">22.04. → the twenty-second of April</div><div class="de">gesprochen: „the twenty-second of April"</div></div>
+    <div class="ex"><div class="en">07.05. → the seventh of May</div><div class="de">gesprochen: „the seventh of May"</div></div>
+    <div class="ex"><div class="en">01.01. → the first of January</div><div class="de">gesprochen: „the first of January"</div></div>
+    <div class="ex"><div class="en">31.12. → the thirty-first of December</div><div class="de">Silvester auf Englisch</div></div>
+
+    <div class="rule good">
+      ⭐ <strong>Tipp für Zehnerkombinationen (21, 22, 23 …):</strong><br>
+      Die <em>letzte Ziffer</em> bestimmt die Endung – genau wie bei 1, 2, 3:<br>
+      21 → twenty-<strong>first</strong> &nbsp;|&nbsp; 22 → twenty-<strong>second</strong> &nbsp;|&nbsp; 23 → twenty-<strong>third</strong><br>
+      24–29 → twenty-fourth … twenty-ninth &nbsp;|&nbsp; 31 → thirty-<strong>first</strong>
+    </div>
+  </div>
+
+</div><!-- /grammar-sec -->
+
+
+<!-- ═══════════════ QUIZ ═══════════════ -->
+<div class="section" id="quiz-sec">
+  <div class="card quiz-topbar">
+    <div>
+      <div class="card-title">🧠 Wissensquiz</div>
+      <div class="card-subtitle">12 zufällig ausgewählte Fragen – jedes Mal anders!</div>
+    </div>
+    <button class="btn btn-outline" onclick="startQuiz()">🔄 Neues Quiz</button>
+  </div>
+  <div id="quiz-wrap">
+    <div class="card" style="text-align:center; padding:40px;">
+      <p style="font-size:1.05rem; margin-bottom:20px; color:var(--muted);">Klicke auf „Quiz starten", um zu beginnen.<br>Jedes Mal werden 12 Fragen zufällig ausgewählt!</p>
+      <button class="btn btn-blue" onclick="startQuiz()">Quiz starten ▶</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════ WORKSHEET ═══════════════ -->
+<div class="section" id="worksheet-sec">
+  <div class="no-print" style="text-align:right; margin-bottom:18px;">
+    <button class="btn btn-purple" onclick="window.print()">🖨️ Arbeitsblatt drucken</button>
+  </div>
+
+  <div class="card" style="text-align:center; padding-bottom:18px; margin-bottom:26px;">
+    <h2 style="font-size:1.4rem; margin-bottom:6px;">Englisch – Übungsarbeitsblatt</h2>
+    <p style="color:var(--muted);">Klasse 5 &nbsp;|&nbsp; Name: _________________________ &nbsp;|&nbsp; Datum: ______________</p>
+  </div>
+
+  <!-- Task 1 -->
+  <div class="card ws-task">
+    <div class="ws-title">Aufgabe 1: <em>Do</em> oder <em>Does</em>? Ergänze das passende Hilfsverb. <span class="ws-badge">G11a</span></div>
+    <div class="ws-line">1. &nbsp;<span class="ws-gap"></span>&nbsp; you like ice cream?</div>
+    <div class="ws-line">2. &nbsp;<span class="ws-gap"></span>&nbsp; she speak French?</div>
+    <div class="ws-line">3. &nbsp;<span class="ws-gap"></span>&nbsp; they live in London?</div>
+    <div class="ws-line">4. &nbsp;<span class="ws-gap"></span>&nbsp; your brother play basketball?</div>
+    <div class="ws-line">5. &nbsp;<span class="ws-gap"></span>&nbsp; it rain a lot in England?</div>
+    <div class="ws-line">6. &nbsp;<span class="ws-gap"></span>&nbsp; we need an umbrella today?</div>
+    <button class="sol-btn no-print" onclick="toggleSol(this)">Lösungen anzeigen</button>
+    <div class="sol-content">1. Do &nbsp;|&nbsp; 2. Does &nbsp;|&nbsp; 3. Do &nbsp;|&nbsp; 4. Does &nbsp;|&nbsp; 5. Does &nbsp;|&nbsp; 6. Do</div>
+  </div>
+
+  <!-- Task 2 -->
+  <div class="card ws-task">
+    <div class="ws-title">Aufgabe 2: Bilde Verneinungen mit <em>don't</em> oder <em>doesn't</em>. <span class="ws-badge">G11b</span></div>
+    <div class="ws-line">1. I like cats. &nbsp;→&nbsp; I &nbsp;<span class="ws-gap"></span>&nbsp; cats.</div>
+    <div class="ws-line">2. She plays tennis. &nbsp;→&nbsp; She &nbsp;<span class="ws-gap"></span>&nbsp; tennis.</div>
+    <div class="ws-line">3. They watch TV. &nbsp;→&nbsp; They &nbsp;<span class="ws-gap"></span>&nbsp; TV.</div>
+    <div class="ws-line">4. He eats vegetables. &nbsp;→&nbsp; He &nbsp;<span class="ws-gap"></span>&nbsp; vegetables.</div>
+    <div class="ws-line">5. We go to school on Sundays. &nbsp;→&nbsp; We &nbsp;<span class="ws-gap"></span>&nbsp; to school on Sundays.</div>
+    <button class="sol-btn no-print" onclick="toggleSol(this)">Lösungen anzeigen</button>
+    <div class="sol-content">1. don't like &nbsp;|&nbsp; 2. doesn't play &nbsp;|&nbsp; 3. don't watch &nbsp;|&nbsp; 4. doesn't eat &nbsp;|&nbsp; 5. don't go</div>
+  </div>
+
+  <!-- Task 3 -->
+  <div class="card ws-task">
+    <div class="ws-title">Aufgabe 3: Schreibe passende Kurzantworten. <span class="ws-badge">G11a</span></div>
+    <div class="ws-line">1. Do you live in Munich? &nbsp;(✓) &nbsp;→&nbsp; Yes, <span class="ws-long-gap"></span></div>
+    <div class="ws-line">2. Does Emma have a dog? &nbsp;(✗) &nbsp;→&nbsp; No, <span class="ws-long-gap"></span></div>
+    <div class="ws-line">3. Do they speak English? &nbsp;(✓) &nbsp;→&nbsp; Yes, <span class="ws-long-gap"></span></div>
+    <div class="ws-line">4. Does he play football? &nbsp;(✗) &nbsp;→&nbsp; No, <span class="ws-long-gap"></span></div>
+    <div class="ws-line">5. Do your parents work in an office? &nbsp;(✓) &nbsp;→&nbsp; Yes, <span class="ws-long-gap"></span></div>
+    <button class="sol-btn no-print" onclick="toggleSol(this)">Lösungen anzeigen</button>
+    <div class="sol-content">1. Yes, I do. &nbsp;|&nbsp; 2. No, she doesn't. &nbsp;|&nbsp; 3. Yes, they do. &nbsp;|&nbsp; 4. No, he doesn't. &nbsp;|&nbsp; 5. Yes, they do.</div>
+  </div>
+
+  <!-- Task 4 -->
+  <div class="card ws-task">
+    <div class="ws-title">Aufgabe 4: Welches Fragewort passt? <span class="ws-badge">G11c</span></div>
+    <p style="color:var(--muted); font-size:.88rem; margin-bottom:10px;"><em>Wähle aus: &nbsp; What – Where – When – Who – How many – Why</em></p>
+    <div class="ws-line">1. &nbsp;<span class="ws-gap"></span>&nbsp; do you live? &nbsp;– I live in Hamburg.</div>
+    <div class="ws-line">2. &nbsp;<span class="ws-gap"></span>&nbsp; does she eat for lunch? &nbsp;– She eats a sandwich.</div>
+    <div class="ws-line">3. &nbsp;<span class="ws-gap"></span>&nbsp; do you go to school? &nbsp;– At half past seven.</div>
+    <div class="ws-line">4. &nbsp;<span class="ws-gap"></span>&nbsp; is your best friend? &nbsp;– Tom is.</div>
+    <div class="ws-line">5. &nbsp;<span class="ws-gap"></span>&nbsp; pets do you have? &nbsp;– I have two cats.</div>
+    <div class="ws-line">6. &nbsp;<span class="ws-gap"></span>&nbsp; does he go to bed early? &nbsp;– Because he is tired.</div>
+    <button class="sol-btn no-print" onclick="toggleSol(this)">Lösungen anzeigen</button>
+    <div class="sol-content">1. Where &nbsp;|&nbsp; 2. What &nbsp;|&nbsp; 3. When &nbsp;|&nbsp; 4. Who &nbsp;|&nbsp; 5. How many &nbsp;|&nbsp; 6. Why</div>
+  </div>
+
+  <!-- Task 5 -->
+  <div class="card ws-task">
+    <div class="ws-title">Aufgabe 5: <em>some</em> oder <em>any</em>? <span class="ws-badge">G12a</span></div>
+    <div class="ws-line">1. I have &nbsp;<span class="ws-gap"></span>&nbsp; friends in Manchester.</div>
+    <div class="ws-line">2. There aren't &nbsp;<span class="ws-gap"></span>&nbsp; parks in this village.</div>
+    <div class="ws-line">3. Do you have &nbsp;<span class="ws-gap"></span>&nbsp; sisters?</div>
+    <div class="ws-line">4. There are &nbsp;<span class="ws-gap"></span>&nbsp; great shops in our town.</div>
+    <div class="ws-line">5. She doesn't drink &nbsp;<span class="ws-gap"></span>&nbsp; juice.</div>
+    <div class="ws-line">6. Would you like &nbsp;<span class="ws-gap"></span>&nbsp; orange juice? &nbsp;<em>(Angebot)</em></div>
+    <button class="sol-btn no-print" onclick="toggleSol(this)">Lösungen anzeigen</button>
+    <div class="sol-content">1. some &nbsp;|&nbsp; 2. any &nbsp;|&nbsp; 3. any &nbsp;|&nbsp; 4. some &nbsp;|&nbsp; 5. any &nbsp;|&nbsp; 6. some (Angebot → some!)</div>
+  </div>
+
+  <!-- Task 6 -->
+  <div class="card ws-task">
+    <div class="ws-title">Aufgabe 6: Schreibe das Datum auf Englisch aus. <span class="ws-badge">Datum</span></div>
+    <p style="color:var(--muted); font-size:.88rem; margin-bottom:10px;"><em>Beispiel: 22.04. → the twenty-second of April</em></p>
+    <div class="ws-line">1. 01.01. &nbsp;→&nbsp; <span class="ws-long-gap"></span></div>
+    <div class="ws-line">2. 14.02. &nbsp;→&nbsp; <span class="ws-long-gap"></span></div>
+    <div class="ws-line">3. 03.10. &nbsp;→&nbsp; <span class="ws-long-gap"></span></div>
+    <div class="ws-line">4. 25.12. &nbsp;→&nbsp; <span class="ws-long-gap"></span></div>
+    <div class="ws-line">5. 31.05. &nbsp;→&nbsp; <span class="ws-long-gap"></span></div>
+    <button class="sol-btn no-print" onclick="toggleSol(this)">Lösungen anzeigen</button>
+    <div class="sol-content">
+      1. the first of January &nbsp;|&nbsp; 2. the fourteenth of February &nbsp;|&nbsp;
+      3. the third of October &nbsp;|&nbsp; 4. the twenty-fifth of December &nbsp;|&nbsp; 5. the thirty-first of May
+    </div>
+  </div>
+
+  <!-- Task 7 -->
+  <div class="card ws-task">
+    <div class="ws-title">Aufgabe 7: Fehler finden &amp; korrigieren. <span class="ws-badge">Fehlerkorrektur</span></div>
+    <p style="color:var(--muted); font-size:.88rem; margin-bottom:10px;"><em>Jeder Satz enthält genau einen Fehler. Schreibe den korrekten Satz.</em></p>
+    <div class="ws-line">1. Does she likes chocolate? &nbsp;→&nbsp; <span class="ws-long-gap"></span></div>
+    <div class="ws-line">2. He doesn't plays video games. &nbsp;→&nbsp; <span class="ws-long-gap"></span></div>
+    <div class="ws-line">3. Do he live in Paris? &nbsp;→&nbsp; <span class="ws-long-gap"></span></div>
+    <div class="ws-line">4. I have some milk. (Verneinung!) &nbsp;→&nbsp; I don't have <span class="ws-long-gap"></span></div>
+    <div class="ws-line">5. Man sagt „the seveth of May" für 07.05. &nbsp;→&nbsp; <span class="ws-long-gap"></span></div>
+    <button class="sol-btn no-print" onclick="toggleSol(this)">Lösungen anzeigen</button>
+    <div class="sol-content">
+      1. Does she <strong>like</strong> chocolate? &nbsp;|&nbsp;
+      2. He doesn't <strong>play</strong> video games. &nbsp;|&nbsp;
+      3. <strong>Does</strong> he live in Paris? &nbsp;|&nbsp;
+      4. I don't have <strong>any</strong> milk. &nbsp;|&nbsp;
+      5. the <strong>seventh</strong> of May
+    </div>
+  </div>
+
+  <!-- Task 8: Free writing -->
+  <div class="card ws-task">
+    <div class="ws-title">Aufgabe 8: Schreibe 5 eigene Sätze über deinen Wohnort / dein Dorf. <span class="ws-badge">Schreiben</span></div>
+    <p style="color:var(--muted); font-size:.88rem; margin-bottom:12px;"><em>Benutze: some/any, Simple Present, Fragewörter. Beginne jeden Satz anders!</em></p>
+    <div style="border-bottom:1px solid #ccc; min-height:28px; margin-bottom:10px;"></div>
+    <div style="border-bottom:1px solid #ccc; min-height:28px; margin-bottom:10px;"></div>
+    <div style="border-bottom:1px solid #ccc; min-height:28px; margin-bottom:10px;"></div>
+    <div style="border-bottom:1px solid #ccc; min-height:28px; margin-bottom:10px;"></div>
+    <div style="border-bottom:1px solid #ccc; min-height:28px; margin-bottom:10px;"></div>
+  </div>
+
+  <div style="text-align:center; color:var(--muted); font-size:.85rem; padding: 12px 0 4px;">
+    Viel Erfolg bei der Klassenarbeit! 🌟
+  </div>
+</div><!-- /worksheet-sec -->
+
+</div><!-- /content -->
+
+<div class="no-print" style="text-align:center; padding:20px; color:var(--muted); font-size:.82rem;">
+  Klasse 5a · Englisch · Lernhilfe zur Vorbereitung auf die 3. Klassenarbeit
+</div>
+
+<script>
+// ─── NAVIGATION ───────────────────────────────────────────────
+function showSection(name, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(name + '-sec').classList.add('active');
+  if (btn) btn.classList.add('active');
+}
+
+// ─── SOLUTION TOGGLE ──────────────────────────────────────────
+function toggleSol(btn) {
+  const box = btn.nextElementSibling;
+  box.classList.toggle('open');
+  btn.textContent = box.classList.contains('open') ? 'Lösungen verbergen' : 'Lösungen anzeigen';
+}
+
+// ─── QUIZ DATA ────────────────────────────────────────────────
+const QB = [
+  // G11a – Questions & Short Answers
+  { topic:'G11a', color:'#2563eb',
+    q:'Welches Hilfsverb benutzt man bei <em>he / she / it</em> für Fragen?',
+    opts:['do','does','is','are'], cor:1,
+    exp:'Bei <em>he/she/it</em> benutzt man <strong>does</strong>. Bei I/you/we/they → <strong>do</strong>.' },
+  { topic:'G11a', color:'#2563eb',
+    q:'Welcher Satz ist korrekt?',
+    opts:['Do your sister speak German?','Does your sister speaks German?','Does your sister speak German?','Is your sister speak German?'], cor:2,
+    exp:'Nach <strong>does</strong> steht das Verb immer in der <strong>Grundform</strong> (kein –s).' },
+  { topic:'G11a', color:'#2563eb',
+    q:'"Does Emma play tennis?" – Welche Kurzantwort ist richtig?',
+    opts:['Yes, Emma does.','Yes, she do.','Yes, she does.','Yes, she is.'], cor:2,
+    exp:'Man ersetzt den Namen durch das Pronomen und wiederholt das Hilfsverb: <strong>Yes, she does.</strong>' },
+  { topic:'G11a', color:'#2563eb',
+    q:'"Do they live in Berlin?" – Welche Verneinungsantwort stimmt?',
+    opts:["No, they doesn't.","No, they don't.","No, they aren't.","No, don't they."], cor:1,
+    exp:'Bei <em>they</em>: <strong>No, they don\'t.</strong>' },
+  { topic:'G11a', color:'#2563eb',
+    q:'Wie fragt man: "Spielst du Gitarre?"',
+    opts:['Are you play guitar?','Does you play guitar?','Do you plays guitar?','Do you play guitar?'], cor:3,
+    exp:'Bei <em>you</em> → <strong>do</strong>, Verb in Grundform: <strong>Do you play guitar?</strong>' },
+  // G11b – Negatives
+  { topic:'G11b', color:'#7c3aed',
+    q:'Welcher Satz ist korrekt?',
+    opts:["She don't like cats.","She doesn't likes cats.","She doesn't like cats.","She not like cats."], cor:2,
+    exp:'Bei <em>she</em> → <strong>doesn\'t</strong> + Grundform: <strong>She doesn\'t like cats.</strong>' },
+  { topic:'G11b', color:'#7c3aed',
+    q:'Wie verneinst du: "They play football."?',
+    opts:["They doesn't play football.","They don't plays football.","They don't play football.","They not play football."], cor:2,
+    exp:'Bei <em>they</em> → <strong>don\'t</strong> + Grundform: <strong>They don\'t play football.</strong>' },
+  { topic:'G11b', color:'#7c3aed',
+    q:'Was steht direkt nach <em>doesn\'t</em>?',
+    opts:['Verb mit –s (z.B. goes)','Verb in der Grundform (z.B. go)','Verb mit –ing','Verb mit –ed'], cor:1,
+    exp:'Nach <strong>doesn\'t</strong> steht die Grundform – niemals mit –s!' },
+  { topic:'G11b', color:'#7c3aed',
+    q:'Wie verneinst du: "My dad works in a shop."?',
+    opts:["My dad don't work in a shop.","My dad doesn't works in a shop.","My dad doesn't work in a shop.","My dad not works in a shop."], cor:2,
+    exp:'<em>dad = he</em> → <strong>doesn\'t</strong> + Grundform: <strong>My dad doesn\'t work in a shop.</strong>' },
+  // G11c – Question Words
+  { topic:'G11c', color:'#0891b2',
+    q:'Welches Fragewort fragt nach einem <strong>Ort</strong>?',
+    opts:['What','When','Where','Who'], cor:2,
+    exp:'<strong>Where</strong> = Wo/Wohin. What=Was, When=Wann, Who=Wer.' },
+  { topic:'G11c', color:'#0891b2',
+    q:'Vervollständige: "_____ does she live?"',
+    opts:['What','When','Where','Who'], cor:2,
+    exp:'Wohnort = Ort → <strong>Where does she live?</strong>' },
+  { topic:'G11c', color:'#0891b2',
+    q:'„_____ do you eat for breakfast?" – Man fragt nach einer <strong>Sache</strong>.',
+    opts:['Where','When','Who','What'], cor:3,
+    exp:'<strong>What</strong> fragt nach Dingen/Sachen.' },
+  { topic:'G11c', color:'#0891b2',
+    q:'„_____ do you go to school?" – Man fragt nach der <strong>Uhrzeit</strong>.',
+    opts:['Where','Who','When','What'], cor:2,
+    exp:'<strong>When</strong> fragt nach der Zeit.' },
+  { topic:'G11c', color:'#0891b2',
+    q:'„Who lives next door?" – Warum fehlt <em>does</em>?',
+    opts:['Das ist falsch – man braucht does.','Weil who das Subjekt ist – kein do/does nötig.','Weil es eine Verneinung ist.','Weil who immer mit is steht.'], cor:1,
+    exp:'Wenn <strong>who</strong> das Subjekt ist, steht kein do/does. Das Verb bekommt dann –s: <strong>Who lives…?</strong>' },
+  // G12a – Some / Any
+  { topic:'G12a', color:'#d97706',
+    q:'In einem <strong>positiven Satz</strong> benutzt man …',
+    opts:['any','some','a','the'], cor:1,
+    exp:'Positive Sätze → <strong>some</strong>: "There are some shops here."' },
+  { topic:'G12a', color:'#d97706',
+    q:'"I don\'t have _____ brothers." – Was ist richtig?',
+    opts:['some','any','a','no'], cor:1,
+    exp:'Verneinung → <strong>any</strong>.' },
+  { topic:'G12a', color:'#d97706',
+    q:'"Do you have _____ pets?" – Was ist richtig?',
+    opts:['some','any','a','the'], cor:1,
+    exp:'Fragen → normalerweise <strong>any</strong>.' },
+  { topic:'G12a', color:'#d97706',
+    q:'"Would you like _____ juice?" (Angebot) – Was ist richtig?',
+    opts:['any','a','some','the'], cor:2,
+    exp:'Bei Angeboten benutzt man <strong>some</strong> statt any.' },
+  { topic:'G12a', color:'#d97706',
+    q:'Welcher Satz ist korrekt?',
+    opts:['There are any nice cafés in our town.','There are some nice cafés in our town.','There is some nice cafés in our town.','There any nice cafés in our town.'], cor:1,
+    exp:'Positiver Satz → <strong>some</strong>.' },
+  // Dates
+  { topic:'Datum', color:'#16a34a',
+    q:'Was ist die Ordnungszahl von 3?',
+    opts:['3rd – third','3th – thirth','3st – thirst','3nd – thirnd'], cor:0,
+    exp:'<strong>3rd = third</strong> – eine der drei Ausnahmen: 1st/first, 2nd/second, 3rd/third.' },
+  { topic:'Datum', color:'#16a34a',
+    q:'Wie sagt man „22.04." auf Englisch?',
+    opts:['the twenty-two of April','the twenty-second of April','the twenty-secondth of April','twenty-second April'], cor:1,
+    exp:'Datum sprechen: <strong>the + Ordnungszahl + of + Monat</strong> = the twenty-second of April.' },
+  { topic:'Datum', color:'#16a34a',
+    q:'Welcher Monat hat die Nummer 9?',
+    opts:['August','October','September','November'], cor:2,
+    exp:'Jan=1 … Aug=8 → <strong>September = 9</strong>.' },
+  { topic:'Datum', color:'#16a34a',
+    q:'"1st" spricht man aus als …',
+    opts:['oneth','first','firth','onesth'], cor:1,
+    exp:'1st = <strong>first</strong>. Völlig unregelmäßig – nicht „oneth"!' },
+  { topic:'Datum', color:'#16a34a',
+    q:'Welche Endung bekommen die meisten Ordnungszahlen (4, 6, 7 …)?',
+    opts:['–st','–nd','–rd','–th'], cor:3,
+    exp:'Die meisten Ordnungszahlen enden auf <strong>–th</strong>: fourth, sixth, seventh …' },
+  { topic:'Datum', color:'#16a34a',
+    q:'Wie schreibt man „21." als Ordnungszahl?',
+    opts:['twenty-oneth','twenty-first','twenty-onest','twenty-firstth'], cor:1,
+    exp:'21 = <strong>twenty-first</strong>. Die letzte Ziffer (1) bestimmt die Endung: –st.' },
+  { topic:'Datum', color:'#16a34a',
+    q:'Welcher Monat ist der zweite?',
+    opts:['January','March','February','April'], cor:2,
+    exp:'Jan → <strong>February</strong> → March …' },
+  { topic:'Datum', color:'#16a34a',
+    q:'Wie lautet „5th" ausgesprochen?',
+    opts:['fiveth','fivth','fifth','fift'], cor:2,
+    exp:'5th = <strong>fifth</strong> – das „v" wird zu „f"!' },
+  { topic:'Datum', color:'#16a34a',
+    q:'Wie lautet „8th" ausgesprochen?',
+    opts:['eightth','eighthth','eighth','eightieth'], cor:2,
+    exp:'8th = <strong>eighth</strong> – nur ein „t" am Ende!' },
+  { topic:'Datum', color:'#16a34a',
+    q:'Wie sagt man „07.05." auf Englisch?',
+    opts:['the seveth of May','the seventh of May','the seventhth of May','the sevenst of May'], cor:1,
+    exp:'7 → <strong>seventh</strong> → the seventh of May.' },
+];
+
+// ─── QUIZ LOGIC ───────────────────────────────────────────────
+let CQ = [], CA = [], ANS = [];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function startQuiz() {
+  CQ = shuffle(QB).slice(0, 12);
+  CA = new Array(12).fill(null);
+  ANS = new Array(12).fill(false);
+  render();
+}
+
+function render() {
+  const wrap = document.getElementById('quiz-wrap');
+  const done = ANS.filter(Boolean).length;
+  const correct = CA.filter((a, i) => a !== null && a === CQ[i].cor).length;
+  let html = `
+    <div class="no-print">
+      <div style="display:flex;justify-content:space-between;font-size:.88rem;color:var(--muted);margin-bottom:5px;">
+        <span>Beantwortet: ${done}/12</span><span>Richtig: ${correct}</span>
+      </div>
+      <div class="prog-wrap"><div class="prog-bar" style="width:${(done/12)*100}%"></div></div>
+    </div>`;
+
+  CQ.forEach((q, qi) => {
+    const letters = ['A','B','C','D'];
+    html += `<div class="qcard" id="qc${qi}">
+      <div class="qnum" style="color:${q.color}">Frage ${qi+1} von 12 &nbsp;·&nbsp; ${q.topic}</div>
+      <div class="qtext">${q.q}</div>
+      <div class="options">`;
+    q.opts.forEach((opt, oi) => {
+      let cls = 'opt', dis = '';
+      if (ANS[qi]) {
+        dis = 'disabled';
+        if (oi === q.cor) cls += ' correct';
+        else if (oi === CA[qi]) cls += ' wrong';
+      }
+      html += `<button class="${cls}" ${dis} onclick="answer(${qi},${oi})">
+        <span class="opt-ltr">${letters[oi]}</span>${opt}</button>`;
+    });
+    html += `</div>`;
+    if (ANS[qi]) {
+      const ok = CA[qi] === q.cor;
+      html += `<div class="fb show ${ok?'correct':'wrong'}">${ok ? '✅ Richtig!' : '❌ Leider falsch!'} ${q.exp}</div>`;
+    }
+    html += `</div>`;
+  });
+
+  if (ANS.every(Boolean)) {
+    let grade, gcolor, em;
+    if (correct >= 11) { grade='Ausgezeichnet! Note: 1'; gcolor='#16a34a'; em='🏆'; }
+    else if (correct >= 9) { grade='Gut! Note: 2'; gcolor='#2563eb'; em='⭐'; }
+    else if (correct >= 7) { grade='Befriedigend. Note: 3'; gcolor='#d97706'; em='👍'; }
+    else if (correct >= 5) { grade='Ausreichend. Note: 4'; gcolor='#f97316'; em='📚'; }
+    else { grade='Weiter üben! Note: 5'; gcolor='#dc2626'; em='💪'; }
+    html += `<div class="card score-box">
+      <div style="font-size:3rem">${em}</div>
+      <div class="score-big" style="color:${gcolor}">${correct}/12</div>
+      <div class="score-lbl">Fragen richtig</div>
+      <div class="score-grade" style="color:${gcolor}">${grade}</div>
+      <div style="margin-top:24px"><button class="btn btn-blue" onclick="startQuiz()">🔄 Neues Quiz (andere Fragen)</button></div>
+    </div>`;
+  }
+
+  wrap.innerHTML = html;
+}
+
+function answer(qi, oi) {
+  if (ANS[qi]) return;
+  CA[qi] = oi; ANS[qi] = true;
+  render();
+  setTimeout(() => {
+    const next = ANS.findIndex((a, i) => !a && i > qi);
+    if (next !== -1) { const el = document.getElementById('qc'+next); if (el) el.scrollIntoView({behavior:'smooth',block:'start'}); }
+  }, 400);
+}
+</script>
+</body>
+</html>
