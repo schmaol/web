@@ -120,16 +120,31 @@ tr:last-child td { border-bottom: none; }
 .sol-content { display: none; background: var(--green-light); border-radius: 8px; padding: 12px 15px; margin-top: 8px; font-size: .88rem; color: var(--green); }
 .sol-content.open { display: block; }
 
+/* PRINT – color preservation */
+.rule, .ex, th, .tag, .card { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+
 /* PRINT */
 @media print {
-  .no-print, .header, .nav, .sol-btn { display: none !important; }
-  #grammar-sec, #quiz-sec { display: none !important; }
-  #worksheet-sec { display: block !important; }
-  .card { box-shadow: none !important; border: 1px solid #bbb !important; break-inside: avoid; }
+  .no-print, .nav, .sol-btn, .print-btn-row { display: none !important; }
+  #quiz-sec { display: none !important; }
+
+  /* Default: only worksheet prints */
+  body:not(.print-grammar) #grammar-sec { display: none !important; }
+  body:not(.print-grammar) #worksheet-sec { display: block !important; }
+
+  /* Grammar print mode */
+  body.print-grammar #worksheet-sec { display: none !important; }
+  body.print-grammar #grammar-sec { display: block !important; }
+  body.print-grammar .header { display: block !important; background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; padding: 16px 20px !important; }
+  body.print-grammar .header h1 { font-size: 1.5rem !important; }
+
+  .card { box-shadow: none !important; border: 1px solid #bbb !important; break-inside: avoid; margin-bottom: 14px !important; }
   body { background: white; }
-  .ws-print-header { display: block !important; }
-  .content { padding: 10px; }
-  .btn-purple { display: none; }
+  .content { padding: 8px 14px; max-width: 100%; }
+  table { font-size: .83rem; }
+  .ex { font-size: .83rem; }
+  .rule { font-size: .84rem; }
+  .card-title { font-size: 1.05rem !important; }
 }
 
 /* RESPONSIVE */
@@ -158,6 +173,9 @@ tr:last-child td { border-bottom: none; }
 
 <!-- ═══════════════ GRAMMAR ═══════════════ -->
 <div class="section active" id="grammar-sec">
+  <div class="print-btn-row no-print" style="text-align:right; margin-bottom:18px;">
+    <button class="btn btn-blue" onclick="printGrammar()">🖨️ Grammatik-Übersicht drucken</button>
+  </div>
 
   <!-- G11a -->
   <div class="card">
@@ -497,6 +515,13 @@ tr:last-child td { border-bottom: none; }
 </div>
 
 <script>
+// ─── PRINT GRAMMAR ──────────────────────────────────────────
+function printGrammar() {
+  document.body.classList.add('print-grammar');
+  window.print();
+  document.body.classList.remove('print-grammar');
+}
+
 // ─── NAVIGATION ───────────────────────────────────────────────
 function showSection(name, btn) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
