@@ -195,12 +195,12 @@ h3.sub { color:var(--blue); font-size:0.98rem; margin:14px 0 4px; border-bottom:
 ════════════════════════════════════════════════════ -->
 <section class="section" id="k1">
   <h2>🗺️ 1. Punkte im Koordinatensystem</h2>
-  <p>Das <strong>Koordinatensystem</strong> besteht aus zwei senkrecht zueinander stehenden Zahlengeraden, die sich im <strong>Ursprung O(0|0)</strong> schneiden.</p>
+  <p>Das <strong>Koordinatensystem</strong> besteht aus zwei senkrecht zueinander stehenden Zahlenstrahlen, die sich im <strong>Ursprung O(0|0)</strong> schneiden.</p>
 
   <div class="info">
     <strong>Die wichtigsten Begriffe:</strong><br>
-    • <strong>x-Achse</strong> — die waagerechte Zahlengerade (→)<br>
-    • <strong>y-Achse</strong> — die senkrechte Zahlengerade (↑)<br>
+    • <strong>x-Achse</strong> — der nach rechts gerichtete Zahlenstrahl (→)<br>
+    • <strong>y-Achse</strong> — der nach oben gerichtete Zahlenstrahl (↑)<br>
     • <strong>Ursprung O(0|0)</strong> — Schnittpunkt beider Achsen<br>
     • <strong>Punkt P(x|y)</strong> — x = wie weit rechts/links, y = wie weit oben/unten
   </div>
@@ -289,7 +289,7 @@ h3.sub { color:var(--blue); font-size:0.98rem; margin:14px 0 4px; border-bottom:
   <div class="formula">d(P, g) = Länge des Lots von P auf g</div>
 
   <div class="info">
-    Das <strong>Lot</strong> ist die senkrechte Strecke von P auf g. Der Schnittpunkt heißt <strong>Lotfußpunkt P'</strong>.<br>
+    Das <strong>Lot</strong> ist die senkrechte Strecke von P auf g. Der Schnittpunkt heißt <strong>Lotfußpunkt F</strong>.<br>
     Das Lot steht immer <strong>⊥</strong> auf der Geraden (90°-Winkel am Fußpunkt).
   </div>
 
@@ -306,8 +306,8 @@ h3.sub { color:var(--blue); font-size:0.98rem; margin:14px 0 4px; border-bottom:
     <strong>So zeichnest du das Lot:</strong><br>
     1. Lege das Geodreieck so an g, dass die 90°-Linie durch P verläuft<br>
     2. Zeichne eine senkrechte Linie von P bis zu g — das ist das Lot<br>
-    3. Markiere den Fußpunkt P' (mit kleinem Quadrat)<br>
-    4. Miss die Strecke P–P' → das ist d(P, g)
+    3. Markiere den Fußpunkt F (mit kleinem Quadrat)<br>
+    4. Miss die Strecke PF → das ist d(P, g)
   </div>
 </section>
 
@@ -318,7 +318,12 @@ h3.sub { color:var(--blue); font-size:0.98rem; margin:14px 0 4px; border-bottom:
   <h2>➡️ 5. Parallelität von Geraden</h2>
   <p>Zwei Geraden in einer Ebene heißen <strong>parallel</strong>, wenn sie sich <strong>niemals schneiden</strong>, egal wie weit man sie verlängert.</p>
 
-  <div class="formula">g ∥ h &nbsp;⟺&nbsp; g und h schneiden sich nie – sie haben überall den gleichen Abstand</div>
+  <div class="formula">g ∥ h &nbsp;⟺&nbsp; Es gibt eine Gerade, die zu g <em>und</em> zu h orthogonal ist</div>
+
+  <div class="info">
+    <strong>Folgerung:</strong> Sind g und h parallel, haben alle Punkte auf g denselben Abstand von h — und umgekehrt.<br>
+    Kurz gesagt: Parallele Geraden <strong>schneiden sich nie</strong> und verlaufen überall im gleichen Abstand.
+  </div>
 
   <div class="cv-wrap">
     <canvas id="cvParallel" width="500" height="260"></canvas>
@@ -401,6 +406,11 @@ h3.sub { color:var(--blue); font-size:0.98rem; margin:14px 0 4px; border-bottom:
   <div id="shapeInfo" class="info" style="min-height:60px;">Wähle oben ein Viereck!</div>
 
   <h3>Vergleichstabelle</h3>
+  <div class="info" style="margin-bottom:10px;">
+    <strong>Wichtige Fachbegriffe beim Trapez:</strong><br>
+    Die parallelen Seiten eines Trapezes heißen <strong>Grundseiten</strong>, die anderen beiden Seiten heißen <strong>Schenkel</strong>.<br>
+    Außerdem heißt die Raute auch <strong>Rhombus</strong>.
+  </div>
   <table>
     <tr><th>Viereck</th><th>Parallele Seiten</th><th>Seiten gleich lang</th><th>Winkel alle 90°</th><th>Diagonalen ⊥</th></tr>
     <tr><td><strong>Trapez</strong></td>        <td>mindestens 1 Paar</td><td>–</td><td>–</td><td>–</td></tr>
@@ -440,6 +450,11 @@ h3.sub { color:var(--blue); font-size:0.98rem; margin:14px 0 4px; border-bottom:
   <button class="btn b-orange" onclick="clearGrid()" style="margin-top:7px;">Löschen ↺</button>
 
   <div class="formula" style="margin-top:14px;">Flächeninhalt A = Anzahl der ausgefüllten Einheitsquadrate &nbsp;(1 Feld = 1 cm², wenn Seitenlänge = 1 cm)</div>
+
+  <div class="warn">
+    <strong>Wichtig:</strong> Flächen mit demselben Flächeninhalt können <em>verschiedene</em> Umfänge haben — und umgekehrt!<br>
+    Beispiel: Ein 4 cm × 1 cm Rechteck (A = 4 cm², U = 10 cm) und ein 2 cm × 2 cm Quadrat (A = 4 cm², U = 8 cm) haben denselben Flächeninhalt, aber unterschiedliche Umfänge.
+  </div>
 </section>
 
 <!-- ═══════════════════════════════════════════════════
@@ -524,6 +539,13 @@ h3.sub { color:var(--blue); font-size:0.98rem; margin:14px 0 4px; border-bottom:
 
   <h3>Quadrat als Sonderfall</h3>
   <div class="formula">Quadrat (a = b): &nbsp; A = a² &nbsp;&nbsp;|&nbsp;&nbsp; U = 4 · a</div>
+
+  <h3>Seitenlänge aus dem Flächeninhalt berechnen</h3>
+  <div class="formula">b = A ÷ a &nbsp;&nbsp;(wenn A und eine Seite bekannt)</div>
+  <div class="info">
+    <strong>Vorgehen:</strong> Den Flächeninhalt durch die bekannte Seitenlänge dividieren.<br>
+    Beispiel: A = 600 cm², a = 75 cm &nbsp;→&nbsp; b = 600 cm² ÷ 75 cm = <strong>8 cm</strong>
+  </div>
 
   <div class="ok">
     <strong>Beispiele:</strong><br>
@@ -846,7 +868,7 @@ function drawAbstand(dist) {
   ctAbs.setLineDash([]);
   // Lotfußpunkt P'
   ctAbs.fillStyle='#16a34a'; ctAbs.beginPath(); ctAbs.arc(px,gy,5,0,2*Math.PI); ctAbs.fill();
-  ctAbs.fillStyle='#16a34a'; ctAbs.font='bold 13px sans-serif'; ctAbs.fillText("P'",px+7,gy+14);
+  ctAbs.fillStyle='#16a34a'; ctAbs.font='bold 13px sans-serif'; ctAbs.fillText("F",px+7,gy+14);
   // 90°-Symbol
   const sq=10;
   ctAbs.strokeStyle='#1e293b'; ctAbs.lineWidth=1.5;
